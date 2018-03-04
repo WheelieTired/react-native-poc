@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Mapbox from '@mapbox/react-native-mapbox-gl';
 
-Mapbox.setAccessToken('<your access token here>');
+Mapbox.setAccessToken('pk.eyJ1IjoiYWNhLW1hcGJveCIsImEiOiJjajhkbmNjN2YwcXg0MnhzZnU2dG93NmdqIn0.jEUoPlUBoAsHAZw5GKpgiQ');
 
 export default class App extends Component<{}> {
   render() {
