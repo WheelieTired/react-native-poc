@@ -11,9 +11,9 @@ export default class App extends Component<{}> {
     return (
       <View style={styles.container}>
         <Mapbox.MapView
-            styleURL={Mapbox.StyleURL.Street}
-            zoomLevel={15}
-            centerCoordinate={[11.256, 43.770]}
+            styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
+            zoomLevel={1}
+            centerCoordinate={[-77.6109, 43.1610]}
             style={styles.container}>
         </Mapbox.MapView>
       </View>
