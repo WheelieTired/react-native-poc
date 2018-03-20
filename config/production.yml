@@ -1,0 +1,9 @@
+Client:
+  couch:
+    protocol: https
+    domain: couch.bicycletouringcompanion.com
+    port: 443
+  server:
+    protocol: https
+    domain: btc-server.bicycletouringcompanion.com
+    port: 443

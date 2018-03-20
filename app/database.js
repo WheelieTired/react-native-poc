@@ -1,7 +1,7 @@
 /*global process*/
 import { assignIn } from 'lodash';
 import { connectMut, pointModels } from 'btc-models';
-import PouchDB from 'pouchdb';
+import PouchDB from 'pouchdb-react-native';
 import config from 'config';
 
 // If we are in development, set PouchDB on the window so we can use
