@@ -11,54 +11,54 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ReactDOM from 'react-dom';
 
 // The React components below are inserted by the React router
-import Main from './app/containers/main';
+import Main from './containers/main';
 
-import MapPage from './app/containers/map-page';
-import ListPage from './app/containers/list-page';
-import LoginPage from './app/containers/login-page';
-import LogoutPage from './app/containers/logout-page';
-import RegisterPage from './app/containers/register-page';
-import ForgotPasswordPage from './app/containers/forgot-password-page';
-import ResetPasswordPage from './app/containers/reset-password-page';
-import ThanksPageForgotPassword from './app/containers/thanks-page-forgot-password';
-import ThanksPageResetPassword from './app/containers/thanks-page-reset-password';
-import ThanksPage from './app/containers/thanks-page';
-import LoadingPage from './app/containers/loading-page';
-//import RoutePage from './app/containers/route-page';
-import FilterPage from './app/containers/filter-page';
-import SettingsPage from './app/containers/settings-page';
-import PublishPage from './app/containers/publish-page';
-import AboutPage from './app/containers/about-page';
-import OnboardingPage from './app/containers/onboarding';
+import MapPage from './containers/map-page';
+import ListPage from './containers/list-page';
+import LoginPage from './containers/login-page';
+import LogoutPage from './containers/logout-page';
+import RegisterPage from './containers/register-page';
+import ForgotPasswordPage from './containers/forgot-password-page';
+import ResetPasswordPage from './containers/reset-password-page';
+import ThanksPageForgotPassword from './containers/thanks-page-forgot-password';
+import ThanksPageResetPassword from './containers/thanks-page-reset-password';
+import ThanksPage from './containers/thanks-page';
+import LoadingPage from './containers/loading-page';
+import RoutePage from './containers/route-page';
+import FilterPage from './containers/filter-page';
+import SettingsPage from './containers/settings-page';
+import PublishPage from './containers/publish-page';
+import AboutPage from './containers/about-page';
+import OnboardingPage from './containers/onboarding';
 
-import AddServicePage from './app/containers/wizard/add-service-page';
-import UpdateServicePage from './app/containers/wizard/update-service-page';
-import AddAlertPage from './app/containers/wizard/add-alert-page';
+import AddServicePage from './containers/wizard/add-service-page';
+import UpdateServicePage from './containers/wizard/update-service-page';
+import AddAlertPage from './containers/wizard/add-alert-page';
 
-import PointLocation from './app/components/wizard/point-location';
-import ServiceName from './app/components/wizard/service-name';
-import ServiceDescription from './app/components/wizard/service-description';
-import ServiceHours from './app/components/wizard/service-hours';
-import ServiceAmenities from './app/components/wizard/service-amenities';
-import AlertNameDescription from './app/components/wizard/alert-name-description';
+import PointLocation from './components/wizard/point-location';
+import ServiceName from './components/wizard/service-name';
+import ServiceDescription from './components/wizard/service-description';
+import ServiceHours from './components/wizard/service-hours';
+import ServiceAmenities from './components/wizard/service-amenities';
+import AlertNameDescription from './components/wizard/alert-name-description';
 
-import PeekPointCard from './app/components/point-card/peek-point-card';
-import ViewPointCard from './app/components/point-card/view-point-card';
-import RatingPointCard from './app/components/point-card/rating-point-card';
+import PeekPointCard from './components/point-card/peek-point-card';
+import ViewPointCard from './components/point-card/view-point-card';
+import RatingPointCard from './components/point-card/rating-point-card';
 
-import FlagPointCard from './app/components/point-card/flag-point-card';
+import FlagPointCard from './components/point-card/flag-point-card';
 
 // A hash-based history module for use with the react router
-import history from './app/history';
+import history from './history';
 
 // Import the database (which implicitly connects our models)
-import './app/database';
-import store from './app/store';
+import './database';
+import store from './store';
 
 // These allow us to automatically handle network state changes and to
 // maintain the period of replication.
-import { NetworkStateAgent } from './app/reducers/network';
-import { ReplicationAgent, reloadPoints } from './app/reducers/points';
+import { NetworkStateAgent } from './reducers/network';
+import { ReplicationAgent, reloadPoints } from './reducers/points';
 
 // Fix tap events so material-ui components work
 import injectTapEventPlugin from 'react-tap-event-plugin';

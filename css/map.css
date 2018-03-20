@@ -1,0 +1,112 @@
+/*
+ * The map is always fixed positioned below everything taking up 100%
+ * of the screen. This way, the map center is always true no matter what
+ * content might overlay the map.
+ *
+ * The map has two states
+ *  - browse-mode, in which we need to dispay the controls right below the
+ *    application bar.
+ *  - wizard-mode, in which we want to hide the zoom controls.
+ */
+.map {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.mapButtons {
+    z-index: 1000;
+}
+
+/*
+ * In browsing mode, we need to place the controls below the MUI header, which
+ * is 60px tall. We add 4px to preserve the margins of the control area
+ */
+.map--browse-mode .leaflet-top {
+    top: 64px;
+}
+
+/*
+ * In wizard mode, we hide the zoom controls.
+ */
+.map--wizard-mode .leaflet-top {
+    display: none;
+}
+
+/*
+ * Parent div for the bobbing add point marker.
+ *
+ * It should stack above everything else on the map, and should be positioned
+ * in the center of the screen. The marker shadow should *not* be used when
+ * calculating the center of the screen. That is, we should position the parent
+ * div 50% from the left edge, minus half of the *marker's* width.
+ */
+.crosshairs {
+    z-index: 1000;
+    position: fixed;
+    height: 41px;
+    width: 41px;
+    bottom: 50%;
+    left: calc(50% - 12.5px);
+}
+
+/*
+ * The crosshairs shadow does not bounce with the marker. This makes it
+ * easier for the user to be more precise about the marker's position.
+ */
+.crosshairs__shadow {
+    position: absolute;
+    background-image: url('../img/icons/marker-shadow.png');
+    height: 41px;
+    width: 41px;
+    left: 0px;
+}
+
+/*
+ * The bobbing marker
+ */
+.crosshairs__marker {
+    position: absolute;
+    background-image: url('../img/icons/marker-icon.png');
+    height: 41px;
+    width: 25px;
+    left: 0px;
+    top: 0px;
+    -webkit-animation-name: adding;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+}
+@-webkit-keyframes adding {
+    0% {top: 0px;}
+    50% {top: -15px;}
+    100% {top: 0px;}
+}
+/*
+ * The bobbing alert marker
+ */
+.crosshairs__marker_alert {
+    position: absolute;
+    background-image: url('../img/icons/alert-icon.png');
+    height: 38px;
+    width: 25px;
+    left: 0px;
+    top: 3px;
+    -webkit-animation-name: adding-alert;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+}
+@-webkit-keyframes adding-alert {
+    0% {top: 3px;}
+    50% {top: -12px;}
+    100% {top: 3px;}
+}
+
+.leaflet-control-attribution {
+    /* We show map attribution on the about page. */
+    display: none !important;
+}
+
