@@ -4,16 +4,16 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Mapbox from '@mapbox/react-native-mapbox-gl';
 
-Mapbox.setAccessToken('<your access token here>');
+Mapbox.setAccessToken('pk.eyJ1IjoiYWNhLW1hcGJveCIsImEiOiJjajhkbmNjN2YwcXg0MnhzZnU2dG93NmdqIn0.jEUoPlUBoAsHAZw5GKpgiQ');
 
 export default class App extends Component<{}> {
   render() {
     return (
       <View style={styles.container}>
         <Mapbox.MapView
-            styleURL={Mapbox.StyleURL.Street}
-            zoomLevel={15}
-            centerCoordinate={[11.256, 43.770]}
+            styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
+            zoomLevel={1}
+            centerCoordinate={[-77.6109, 43.1610]}
             style={styles.container}>
         </Mapbox.MapView>
       </View>
