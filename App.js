@@ -1,28 +1,17 @@
-/* Temporary file to from tutorial to test out environment */
+import React, {Component} from 'react'
+import { Scene, Router, Actions} from 'react-native-router-flux'
+import { Stylesheet, Text, View, Image} from 'react-native'
 
-import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Mapbox from '@mapbox/react-native-mapbox-gl';
+import Map from './app/components/map'
 
-Mapbox.setAccessToken('pk.eyJ1IjoiYWNhLW1hcGJveCIsImEiOiJjajhkbmNjN2YwcXg0MnhzZnU2dG93NmdqIn0.jEUoPlUBoAsHAZw5GKpgiQ');
+const RouterComponent = () => {
+  return (
+    <Router>
+      <Scene key="root">
+        <Scene key="Map" component={Map} title="Home" />
+      </Scene>
+    </Router>
+  );
+};
 
-export default class App extends Component<{}> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Mapbox.MapView
-            styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
-            zoomLevel={1}
-            centerCoordinate={[-77.6109, 43.1610]}
-            style={styles.container}>
-        </Mapbox.MapView>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+export default RouterComponent
