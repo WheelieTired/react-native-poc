@@ -7,13 +7,12 @@ import CustomNavBar from "./app/components/CustomNavBar";
 import CustomNavBar2 from "./app/components/CustomNavBar2";
 
 import Map from './app/components/map'
-import LoginPage from './app/components/login-page'
 
 const RouterComponent = () => {
   return (
     <Router>
       <Stack key="root">
-        <Scene key="Map" component={LoginPage} title="Home" />
+        <Scene key="Map" component={Map} title="Home" />
 
 
       <Stack key="customNavBar" hideTabBar titleStyle={{alignSelf: 'center'}}>

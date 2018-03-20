@@ -8,10 +8,13 @@
   },
   "dependencies": {
     "@mapbox/react-native-mapbox-gl": "^6.0.3",
+    "auth0-js": "^9.3.1",
     "react": "16.2.0",
     "react-native": "0.53.0",
+    "react-native-button": "^2.3.0",
+    "react-native-router-flux": "^4.0.0-beta.28",
     "react-native-scripts": "^1.11.1",
-    "auth0-js": "^9.3.1"
+    "traverse": "^0.6.6"
   },
   "devDependencies": {
     "babel-jest": "22.2.2",
