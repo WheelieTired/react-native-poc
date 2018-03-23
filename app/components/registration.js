@@ -1,0 +1,102 @@
+import React, { Component } from 'react';
+import { View, StyleSheet, Button, ScrollView, Image } from 'react-native';
+
+import t from 'tcomb-form-native'; // 0.6.9
+
+const Form = t.form.Form;
+
+const User = t.struct({
+  email: t.String,
+  password: t.String,
+  confirmPassword: t.String,
+  firstName: t.String,
+  lastName: t.String
+});
+
+const formStyles = {
+  ...Form.stylesheet,
+  formGroup: {
+    normal: {
+      marginBottom: 10
+    },
+  },
+  controlLabel: {
+    normal: {
+      color: 'blue',
+      fontSize: 18,
+      marginBottom: 7,
+      fontWeight: '600'
+    },
+    // the style applied when a validation error occours
+    error: {
+      color: 'red',
+      fontSize: 18,
+      marginBottom: 7,
+      fontWeight: '600'
+    }
+  }
+}
+
+const options = {
+  fields: {
+    email: {
+      error: 'Please enter a valid email'
+    },
+    password: {
+      error: 'Please enter a password that is at least 3 characters'
+    },
+    confirmPassword: {
+      error: 'Password field does not match',
+    },
+    firstName: {
+          error: 'Please enter a valid first name',
+    },
+    lastName: {
+          error: 'Please enter a valid last name',
+    },
+  },
+  stylesheet: formStyles,
+};
+
+export default class Registration extends Component {
+  handleSubmit = () => {
+    const value = this._form.getValue();
+    console.log('value: ', value);
+  }
+
+  render() {
+    return (
+
+      <View style={styles.container}>
+      <ScrollView>
+        <Image
+            style={styles.icon}
+            source={require('../../img/advc-big.jpg')}
+        />
+        <Form
+            ref={c => this._form = c}
+            type={User}
+            options={options}
+        />
+        <Button
+            title="Sign Up!"
+            onPress={this.handleSubmit}
+        />
+      </ScrollView>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    marginTop: 50,
+    padding: 20,
+    backgroundColor: '#ffffff',
+  },
+  icon: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
