@@ -12,7 +12,7 @@ const RouterComponent = () => {
   return (
     <Router>
       <Stack key="root">
-        <Scene key="Map" component={Map} title="Home" />
+        <Scene key="Map" navBar={CustomNavBarView} component={Map} title="Home" />
 
 
       <Stack key="customNavBar" hideTabBar titleStyle={{alignSelf: 'center'}}>
