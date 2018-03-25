@@ -1,51 +1,74 @@
 import React, {Component} from 'react';
-import { Stack, Scene, Router, Actions} from 'react-native-router-flux';
-import { Stylesheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image} from 'react-native';
+import { Stack, Scene, Tabs, Router, Actions, Drawer} from 'react-native-router-flux';
 
-import CustomNavBarView from "./app/components/CustomNavBarView";
-import CustomNavBar from "./app/components/CustomNavBar";
-import CustomNavBar2 from "./app/components/CustomNavBar2";
+import TabView from './app/components/TabView';
+import TabIcon from './app/components/TabIcon';
+import DrawerContent from './app/components/drawer/DrawerContent';
+import Map from './app/components/map';
+import MenuIcon from './app/images/menu_burger.png';
 
-import Map from './app/components/map'
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, backgroundColor: 'transparent', justifyContent: 'center',
+    alignItems: 'center',
+  },
+  tabBarStyle: {
+    backgroundColor: '#eee',
+  },
+  tabBarSelectedItemStyle: {
+    backgroundColor: '#ddd',
+  },
+});
 
 const RouterComponent = () => {
   return (
     <Router>
       <Stack key="root">
-        <Scene key="Map" component={Map} title="Home" />
 
+          <Drawer
+            hideNavBar
+            key="drawer"
+            contentComponent={DrawerContent}
+            drawerImage={MenuIcon}
+            drawerWidth={300}
+          >
+          <Scene hideNavBar panHandlers={null}>
 
-      <Stack key="customNavBar" hideTabBar titleStyle={{alignSelf: 'center'}}>
-                    <Scene
-                      key="customNavBar1"
-                      title="CustomNavBar 1"
-                      navBar={CustomNavBar}
-                      component={CustomNavBarView}
-                      back
-                    />
-                    <Scene
-                      key="customNavBar2"
-                      title="CustomNavBar 2"
-                      navBar={CustomNavBar}
-                      component={CustomNavBarView}
-                      back
-                    />
-                    <Scene
-                      key="customNavBar3"
-                      title="Another CustomNavBar"
-                      navBar={CustomNavBar2}
-                      component={CustomNavBarView}
-                      back
-                    />
-                    <Scene
-                      key="hiddenNavBar"
-                      title="hiddenNavBar"
-                      component={CustomNavBarView}
-                      hideNavBar={true}
-                      back
-                    />
-                  </Stack>
-              </Stack>
+            <Stack
+               key="tab_1"
+               initial
+               title="Tab #1"
+               tabBarLabel="TAB #1"
+               inactiveBackgroundColor="#FFF"
+               activeBackgroundColor="#DDD"
+               icon={TabIcon}
+               navigationBarStyle={{ backgroundColor: 'green' }}
+               titleStyle={{ color: 'white', alignSelf: 'center' }}
+            >
+            <Scene
+               key="tab_1_1"
+               component={Map}
+               title="Home"
+            />
+
+            </Stack>
+
+            <Stack
+              key="tab_2"
+              title="Tab #2"
+              icon={TabIcon}
+            >
+            <Scene
+              key="tab_2_1"
+              component={TabView}
+              title="Sample Text"
+
+            />
+            </Stack>
+          </Scene>
+        </Drawer>
+      </Stack>
     </Router>
   );
 };
