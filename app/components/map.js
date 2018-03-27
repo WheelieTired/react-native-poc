@@ -98,14 +98,42 @@ const PointCollection = {
     },
     ]};
 
-export default class Map extends Component<{}> {
+export default class Map extends Component {
+
+  getInitialState() {
+    return {
+      mapLocation: {
+        latitude: 0,
+        longitude: 0
+      },
+      center: {
+        latitude: 43.1610,
+        longitude: -77.6109
+      },
+      zoom: 1,
+      direction: 0
+    }
+  }
+
+  onChange(location) {
+    this.setState({ mapLocation: location});
+  }
+
+  onOpenAnnotation(annotaion) {
+    console.log(annotation)
+  }
+
+  onUpdateUserLocation(location) {
+    console.log(location)
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Mapbox.MapView
           styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
           zoomLevel={1}
-          centerCoordinate={[-77.6109, 43.1610]}
+          centerCoordinate={this.state.center}
           style={styles.container}>
           <Mapbox.ShapeSource
             id="earthquakes"
