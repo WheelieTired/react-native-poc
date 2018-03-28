@@ -6,6 +6,7 @@ import TabView from './app/components/TabView';
 import TabIcon from './app/components/TabIcon';
 import DrawerContent from './app/components/drawer/DrawerContent';
 import Map from './app/components/map';
+import Registration from './app/components/registration'
 import MenuIcon from './app/images/menu_burger.png';
 
 const styles = StyleSheet.create({
@@ -61,8 +62,8 @@ const RouterComponent = () => {
             >
             <Scene
               key="tab_2_1"
-              component={TabView}
-              title="Sample Text"
+              component={Registration}
+              title="Registration"
 
             />
             </Stack>
