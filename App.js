@@ -8,16 +8,18 @@ import DrawerContent from './app/components/drawer/DrawerContent';
 import Map from './app/components/map';
 import MenuIcon from './app/images/menu_burger.png';
 
+//import './app/database'; //this is how it was done previously and database.js is still the old file.
+
 const styles = StyleSheet.create({
   container: {
     flex: 1, backgroundColor: 'transparent', justifyContent: 'center',
     alignItems: 'center',
   },
   tabBarStyle: {
-    backgroundColor: '#eee',
+    backgroundColor: '#fff',
   },
   tabBarSelectedItemStyle: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#fff',
   },
 });
 
