@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import { StyleSheet, Text, View, Image} from 'react-native';
 import { Stack, Scene, Tabs, Router, Actions, Drawer} from 'react-native-router-flux';
 
-import Map from './app/components/map'
-import Registration from './app/components/registration'
+import Registration from './app/components/registration';
 import TabView from './app/components/TabView';
 import TabIcon from './app/components/TabIcon';
 import DrawerContent from './app/components/drawer/DrawerContent';

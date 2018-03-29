@@ -87,7 +87,7 @@ export default class Registration extends Component {
     const value = this._form.getValue();
     this.state = value;
     const { firstName, lastName, email, password } = this.state;
-    var url = apiConfig.url + '/users';
+    var url = apiConfig.productionurl + '/users';
     var data = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password };
     console.log(url);
 
