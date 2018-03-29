@@ -1,4 +1,5 @@
 export default {
 	clientId: '8puWuJWZYls1Ylawxm6CMiYREhsGGSyw',
-	url: 'http://localhost:1337',
+	developurl: 'http://localhost:1337',
+	productionurl: 'http://http://52.91.46.42:1337'
 };

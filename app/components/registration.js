@@ -5,6 +5,7 @@ import t from 'tcomb-form-native'; // 0.6.9
 import * as usersApi from '../data/users/api';
 import * as session from '../services/session';
 import * as api from '../services/api';
+import apiConfig from '../services/api/config';
 
 const Form = t.form.Form;
 
@@ -84,16 +85,30 @@ export default class Registration extends Component {
         error: '',
     });
     const value = this._form.getValue();
-    //this.setState = {value};
     this.state = value;
-    console.log('value: ', this.state);
+    const { firstName, lastName, email, password } = this.state;
+    var url = apiConfig.url + '/users';
+    var data = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password };
+    console.log(url);
 
-    const  firstName =  "test";
-    const  email = "testing1";
-    const  password =  "testing2";
+    fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Client-ID': apiConfig.clientId
+        }),
+        mode: 'no-cors',
+        body: JSON.stringify(data), // must match 'Content-Type' header
 
-    usersApi.create( { firstName, email, password })
+      })
+      .then(response => response.json())
+      .catch(error => console.log('Error:', error))
+      .then(response => console.log('Success:', response)); // parses response to JSON
+
+
+    /*usersApi.create( { firstName, lastName, email, password })
     		.then(() => {
+    		    console.log('did i make it here?');
     			session.authenticate(email, password)
     			.then(() => {
     				this.setState(this.initialState);
@@ -109,8 +124,9 @@ export default class Registration extends Component {
     				...(error ? { error } : {}),
     			};
     			this.setState(newState);
+    			console.log(exception);
     		});
-    		console.log('complete');
+    		console.log('complete');*/
   }
 
   render() {
