@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { StyleSheet, Text, View, Image} from 'react-native';
 import { Stack, Scene, Tabs, Router, Actions, Drawer} from 'react-native-router-flux';
 
+import Map from './app/components/map'
+import Registration from './app/components/registration'
 import TabView from './app/components/TabView';
 import TabIcon from './app/components/TabIcon';
 import DrawerContent from './app/components/drawer/DrawerContent';
@@ -24,6 +26,7 @@ const styles = StyleSheet.create({
 const RouterComponent = () => {
   return (
     <Router>
+    
       <Stack key="root">
 
           <Drawer
@@ -61,8 +64,8 @@ const RouterComponent = () => {
             >
             <Scene
               key="tab_2_1"
-              component={TabView}
-              title="Sample Text"
+              component={Registration}
+              title="Register"
 
             />
             </Stack>
