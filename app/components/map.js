@@ -91,7 +91,8 @@ export default class Map extends Component<{}> {
             cluster
             clusterRadius={50}
             clusterMaxZoom={14}
-            url="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson">
+            shape={PointCollection}
+            >
             <Mapbox.SymbolLayer
               id="pointCount"
               style={layerStyles.clusterCount}
