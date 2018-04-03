@@ -7,10 +7,9 @@ const Form = t.form.Form;
 
 const User = t.struct({
   email: t.String,
-  password: t.String,
-  confirmPassword: t.String,
-  firstName: t.String,
-  lastName: t.String
+  oldPassword: t.String,
+  newPassword: t.String,
+  confirmNewPassword: t.String,
 });
 
 const formStyles = {
