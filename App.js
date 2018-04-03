@@ -65,7 +65,6 @@ const RouterComponent = () => {
               key="tab_2_1"
               component={ChangePassword}
               title="ChangePassword"
-
             />
             </Stack>
           </Scene>

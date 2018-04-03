@@ -29,7 +29,7 @@ class TabView extends React.Component {
 
         <Button onPress={Actions.pop}>Back</Button>
         <Button onPress={() => { Actions.tab_1(); }}>Switch to Map</Button>
-        <Button onPress={() => { Actions.tab_2(); }}>Switch to SamplePage</Button>
+        <Button onPress={() => { Actions.tab_2(); }}>Switch to Registration Page</Button>
 
       </View>
     );
