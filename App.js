@@ -63,8 +63,21 @@ const RouterComponent = () => {
             >
             <Scene
               key="tab_2_1"
+              component={Registration}
+              title="Registration"
+            />
+
+            </Stack>
+
+            <Stack
+              key="tab_3"
+              title="Tab #3"
+              icon={TabIcon}
+            >
+            <Scene
+              key="tab_3_1"
               component={ChangePassword}
-              title="ChangePassword"
+              title="Change Password"
             />
             </Stack>
           </Scene>

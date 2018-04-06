@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Button, ScrollView, Image } from 'react-native';
 
 import t from 'tcomb-form-native'; // 0.6.9
+import * as usersApi from '../data/users/api';
+import * as session from '../services/session';
+import * as api from '../services/api';
+import apiConfig from '../services/api/config';
 
 const Form = t.form.Form;
 
@@ -55,9 +59,72 @@ const options = {
 };
 
 export default class ChangePassword extends Component {
+  constructor(props) {
+      super(props);
+
+      this.initialState = {
+        isLoading: false,
+        error: null,
+        email: '',
+        password: '',
+        newPassword: '',
+        confirmNewPassword: '',
+      };
+      this.state = this.initialState;
+  }
+
   handleSubmit = () => {
+    this.setState({
+        isLoading: true,
+        error: '',
+    });
     const value = this._form.getValue();
-    console.log('value: ', value);
+    this.state = value;
+    const {email, password, newPassword } = this.state;
+    console.log("Email is " + email);
+    var url = apiConfig.productionurl + '/users/org.couchdb.user:' + this.state.email;
+    var data = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password };
+    console.log(url);
+
+    session.authenticate(email, password);
+    fetch(url, {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Client-ID': apiConfig.clientId
+        }),
+        mode: 'no-cors',
+        //body: JSON.stringify(data), // must match 'Content-Type' header
+
+      })
+      .then(response => {console.log("JSON OUTPUT", response);
+        return response.json();})
+      //.then(responseData => {console.log(responseData); return responseData;})
+      .catch(error => console.log('Error: This is your error', error))
+      .then(response => console.log('Success:', response)); // parses response to JSON
+
+
+    /*usersApi.create( { firstName, lastName, email, password })
+    		.then(() => {
+    		    console.log('did i make it here?');
+    			session.authenticate(email, password)
+    			.then(() => {
+    				this.setState(this.initialState);
+    				//const routeStack = this.props.navigator.getCurrentRoutes();
+    				//this.props.navigator.jumpTo(routeStack[3]);
+    			});
+    		})
+    		.catch((exception) => {
+    			// Displays only the first error message
+    			const error = api.exceptionExtractError(exception);
+    			const newState = {
+    				isLoading: false,
+    				...(error ? { error } : {}),
+    			};
+    			this.setState(newState);
+    			console.log(exception);
+    		});
+    		console.log('complete');*/
   }
 
   render() {
