@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Mapbox from '@mapbox/react-native-mapbox-gl';
+import {GetPoints, ReplicateFromDB} from '../data/point/point';
 //import markerIcon from '../images/marker-icon.png';
 
 
@@ -100,6 +101,8 @@ const PointCollection = {
 
 export default class Map extends Component<{}> {
   render() {
+    var docs = GetPoints();
+    console.log(docs);
     return (
       <View style={styles.container}>
         <Mapbox.MapView
