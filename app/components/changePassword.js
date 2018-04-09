@@ -82,15 +82,15 @@ export default class ChangePassword extends Component {
     this.state = value;
     const {email, password, newPassword } = this.state;
     console.log("Email is " + email);
-    var url = apiConfig.productionurl + '/users/org.couchdb.user:' + this.state.email;
+    var url = apiConfig.developurl + `/users?email=${encodeURIComponent(email)}`;
     var data = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password };
     console.log(url);
 
-    session.authenticate(email, password);
+
     fetch(url, {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
         headers: new Headers({
-          'Content-Type': 'application/json',
+          //'Content-Type': 'application/json',
           'Client-ID': apiConfig.clientId
         }),
         mode: 'no-cors',
