@@ -8,11 +8,11 @@ import Map from './app/components/map';
 
 
 const Router = StackNavigator({
-    map: { screen: Map },
-    register: { screen: Registration },
+    mapRoute: { screen: Map },
 },
 {
-    initialRouteName: 'map',
+    initialRouteName: 'mapRoute',
+    lazy: 'false'
 });
 
 export default class App extends Component{

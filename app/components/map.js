@@ -12,12 +12,12 @@ export default class Map extends Component<{}> {
   }
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Mapbox.MapView
           styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
           zoomLevel={1}
           centerCoordinate={[-77.6109, 43.1610]}
-          style={styles.container}
+          style={styles.map}
         />
       </View>
     );
@@ -26,6 +26,11 @@ export default class Map extends Component<{}> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+     flex: 1,
+     flexDirection: 'column',
+  },
+  map:{
+    flex: 0.5,
+    top: 1,
   },
 });
