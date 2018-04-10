@@ -36,13 +36,13 @@ export function ReplicateFromDB(){
         ReplicateFromDB();
         var allDocs = db.allDocs().then(function (result) {
                       var docs = result.rows.map(function (row) {
-                        return row.doc;
+                            return row.doc.location;
                       });
                       //console.log(docs);
                       return docs;
                     }).catch(function (err) {
                       console.log(err);
                     });
-        console.log("alldocs",allDocs);
+        //console.log("alldocs",allDocs);
         return allDocs;
     }

@@ -99,10 +99,44 @@ const PointCollection = {
     },
     ]};
 
+export function createPointCollection(){
+
+    GetPoints().then(function(locations){
+
+        const PointCollection = {
+            type: 'FeatureCollection',
+            features: []
+        };
+
+        for(var i=0; i<locations.length; i++){
+
+            if(locations[i] != "undefined"){
+                PointCollection.features.push(
+
+                {
+                    type: 'Feature',
+                    id: 'TestPoint',
+                    properties: {
+                        icon: 'circle-15',
+                    },
+                    geometry: {
+                        type: 'Point',
+                        coordinates: locations[i],
+                    }
+                }
+
+                );
+            }
+        }
+    console.log("collection",PointCollection);
+    return PointCollection;
+    });
+
+}
+
 export default class Map extends Component<{}> {
   render() {
-    var docs = GetPoints();
-    console.log(docs);
+
     return (
       <View style={styles.container}>
         <Mapbox.MapView
@@ -115,7 +149,7 @@ export default class Map extends Component<{}> {
             cluster
             clusterRadius={50}
             clusterMaxZoom={14}
-            shape={PointCollection}
+            shape={this.createPointCollection}
             >
             <Mapbox.SymbolLayer
               id="pointCount"
