@@ -7,9 +7,6 @@ import Mapbox from '@mapbox/react-native-mapbox-gl';
 Mapbox.setAccessToken('pk.eyJ1IjoiYWNhLW1hcGJveCIsImEiOiJjajhkbmNjN2YwcXg0MnhzZnU2dG93NmdqIn0.jEUoPlUBoAsHAZw5GKpgiQ');
 
 export default class Map extends Component<{}> {
-  static navigationOptions={
-    title: 'Map',
-  }
   render() {
     return (
       <View style={styles.container}>
@@ -30,7 +27,6 @@ const styles = StyleSheet.create({
      flexDirection: 'column',
   },
   map:{
-    flex: 0.5,
-    top: 1,
+  flex: .75,
   },
 });
