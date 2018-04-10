@@ -23,6 +23,7 @@ class DrawerContent extends React.Component {
         <Button onPress={Actions.pop}>Back</Button>
         <Button onPress={Actions.tab_1}>Switch to Map</Button>
         <Button onPress={Actions.tab_2}>Switch to Register Page</Button>
+        <Button onPress={Actions.tab_3}>Switch to Login Page</Button>
 
       </View >
     );
