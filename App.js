@@ -2,15 +2,30 @@ import React, {Component} from 'react';
 import { StyleSheet, Text, View, Image} from 'react-native';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
+//Pages
+import Login from './app/components/login';
 import Registration from './app/components/registration';
 import Map from './app/components/map';
+import ChangePassword from './app/components/changePassword'
+
+//Menu Icon
 import MenuIcon from './app/components/MenuIcon';
 
+/**The drawer content
+    For now only screen are defined here with no other styling
+**/
 const DrawerStack = DrawerNavigator({
     map: { screen: Map },
-    register: { screen: Registration}
+    register: { screen: Registration },
+    login: { screen: Login },
+    pwdChange: { screen: ChangePassword }
 })
 
+/**
+    This wraps the DrawerNavigator so that the header can be set at the top layer
+    Essentially only the navigation options matter here and are used to define the header through
+    the MenuIcon component.
+**/
 const DrawerNavigation = StackNavigator({
   DrawerStack: { screen: DrawerStack }
 }, {
@@ -20,6 +35,11 @@ const DrawerNavigation = StackNavigator({
   })
 })
 
+/** Main Router
+    In case we want to add functionality that requires login we can hide those pages in another
+    StackNavigator like 'menu' which will become visibile after login and only the LoginStack would
+    be visible
+**/
 const Router = StackNavigator({
     menu: {screen: DrawerNavigation},
 },
@@ -36,3 +56,17 @@ super(props);
     return <Router />;
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, backgroundColor: 'transparent', justifyContent: 'center',
+    alignItems: 'center',
+  },
+  tabBarStyle: {
+    backgroundColor: '#eee',
+  },
+  tabBarSelectedItemStyle: {
+    backgroundColor: '#ddd',
+  },
+});
+
