@@ -101,12 +101,7 @@ const PointCollection = {
 export default class Map extends Component {
   constructor(props) {
     super(props);
-    const {map} = this.props;
-    this.state = {
-      center: map.center,
-      zoom: map.zoom
-    };
-    this.center = undefined;    
+    this.centercoordinates = undefined;    
   }
   
   myLocation() {
@@ -155,12 +150,13 @@ export default class Map extends Component {
   }
 
   render() {
+    this.getInitialState();
     return (
       <View style={styles.container}>
         <Mapbox.MapView
           styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
           zoomLevel={1}
-          centerCoordinate={this.state.center}
+          centerCoordinate={this.centercoordinates}
           style={styles.container}
           onDidFinishLoadingStyle={(map) => {
             map.addControl(new MapboxGl.NavigationControl());
