@@ -86,48 +86,27 @@ export default class Registration extends Component {
     });
     const value = this._form.getValue();
     this.state = value;
-    const { firstName, lastName, email, password } = this.state;
     var url = apiConfig.productionurl + '/users';
-    var data = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password };
-    console.log(url);
 
-    fetch(url, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        headers: new Headers({
-          'Content-Type': 'application/json',
-          'Client-ID': apiConfig.clientId
-        }),
-        mode: 'no-cors',
-        body: JSON.stringify(data), // must match 'Content-Type' header
+    if(this.state != null){
+        const { firstName, lastName, email, password } = this.state;
+        var data = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password };
 
-      })
-      .then(response => response.json())
-      .catch(error => console.log('Error:', error))
-      .then(response => console.log('Success:', response)); // parses response to JSON
+        fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Client-ID': apiConfig.clientId
+            }),
+            mode: 'no-cors',
+            body: JSON.stringify(data), // must match 'Content-Type' header
 
-
-    /*usersApi.create( { firstName, lastName, email, password })
-    		.then(() => {
-    		    console.log('did i make it here?');
-    			session.authenticate(email, password)
-    			.then(() => {
-    				this.setState(this.initialState);
-    				//const routeStack = this.props.navigator.getCurrentRoutes();
-    				//this.props.navigator.jumpTo(routeStack[3]);
-    			});
-    		})
-    		.catch((exception) => {
-    			// Displays only the first error message
-    			const error = api.exceptionExtractError(exception);
-    			const newState = {
-    				isLoading: false,
-    				...(error ? { error } : {}),
-    			};
-    			this.setState(newState);
-    			console.log(exception);
-    		});
-    		console.log('complete');*/
-  }
+            })
+            .then(response => response.json())
+            .catch(error => console.log('Error:', error))
+            .then(response => console.log('Success:', response)); // parses response to JSON
+        }
+    }
 
   render() {
     return (
