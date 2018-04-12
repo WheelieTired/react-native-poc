@@ -12,9 +12,8 @@ const Form = t.form.Form;
 const User = t.struct({
   email: t.String,
   password: t.String,
-  confirmPassword: t.String,
-  firstName: t.String,
-  lastName: t.String
+  newPassword: t.String,
+  confirmNewPassword: t.String,
 });
 
 const formStyles = {
@@ -44,39 +43,34 @@ const formStyles = {
 const options = {
   fields: {
     email: {
-      error: 'Please enter a valid email'
+      error: 'Please enter your email'
     },
     password: {
-      error: 'Please enter a password that is at least 3 characters'
+      error: 'Please enter your previous password'
     },
-    confirmPassword: {
-      error: 'Password field does not match',
+    newPassword: {
+      error: 'Please enter a new password that is at least 3 characters'
     },
-    firstName: {
-          error: 'Please enter a valid first name',
-    },
-    lastName: {
-          error: 'Please enter a valid last name',
+    confirmNewPassword: {
+      error: 'Password fields do not match'
     },
   },
   stylesheet: formStyles,
 };
 
-export default class Registration extends Component {
-
+export default class ChangePassword extends Component {
   constructor(props) {
-  		super(props);
+      super(props);
 
-  		this.initialState = {
-  			isLoading: false,
-  			error: null,
-  			email: '',
-  			password: '',
-  			confirmPassword: '',
-  			firstName: '',
-  			lastName: '',
-  		};
-  		this.state = this.initialState;
+      this.initialState = {
+        isLoading: false,
+        error: null,
+        email: '',
+        password: '',
+        newPassword: '',
+        confirmNewPassword: '',
+      };
+      this.state = this.initialState;
   }
 
   handleSubmit = () => {
@@ -86,27 +80,33 @@ export default class Registration extends Component {
     });
     const value = this._form.getValue();
     this.state = value;
-    var url = apiConfig.productionurl + '/users';
+
+    var url = apiConfig.productionurl + `/users/changePassword`;
 
     if(this.state != null){
-        const { firstName, lastName, email, password } = this.state;
-        var data = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password };
+        const {email, password, newPassword } = this.state;
+
+        var data = {email: this.state.email, password: this.state.password, newPassword: this.state.newPassword };
+        console.log(url);
+
 
         fetch(url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: new Headers({
                 'Content-Type': 'application/json',
-                'Client-ID': apiConfig.clientId
+                'Client-ID': apiConfig.clientId,
             }),
             mode: 'no-cors',
             body: JSON.stringify(data), // must match 'Content-Type' header
 
-            })
-            .then(response => response.json())
-            .catch(error => console.log('Error:', error))
-            .then(response => console.log('Success:', response)); // parses response to JSON
-        }
+        })
+        .then(response => {console.log("JSON OUTPUT", response);
+            return response.json();})
+        //.then(responseData => {console.log(responseData); return responseData;})
+        .catch(error => console.log('Error: This is your error', error))
+        .then(response => console.log('Success:', response)); // parses response to JSON
     }
+  }
 
   render() {
     return (
@@ -123,7 +123,7 @@ export default class Registration extends Component {
             options={options}
         />
         <Button
-            title="Sign Up!"
+            title="Change Password!"
             onPress={this.handleSubmit}
         />
       </ScrollView>

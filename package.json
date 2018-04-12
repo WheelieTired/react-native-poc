@@ -10,12 +10,16 @@
   "dependencies": {
     "@mapbox/react-native-mapbox-gl": "^6.0.3",
     "auth0-js": "^9.3.1",
+    "config": "1.30.0",
+    "pouchdb-react-native": "^6.4.0",
     "buffer": "^5.1.0",
     "fetch": "^1.1.0",
     "fetchival": "^0.3.3",
     "lodash": "^4.17.5",
     "react": "16.2.0",
     "react-native": "0.53.0",
+    "react-native-button": "^2.3.0",
+    "react-native-drawer": "^2.5.0",
     "react-native-router-flux": "^4.0.0-beta.28",
     "react-native-scripts": "^1.11.1",
     "redux": "^3.7.2",
@@ -27,10 +31,6 @@
     "string_decoder": "^1.1.0",
     "tcomb-form-native": "^0.6.11",
     "uuid": "^3.2.1",
-    "config": "1.30.0",
-    "pouchdb-react-native": "^6.4.0",
-    "react-native-button": "^2.3.0",
-    "react-native-drawer": "^2.5.0",
     "traverse": "^0.6.6"
   },
   "devDependencies": {
