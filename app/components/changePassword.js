@@ -82,7 +82,7 @@ export default class ChangePassword extends Component {
     this.state = value;
     const {email, password, newPassword } = this.state;
     console.log("Email is " + email);
-    var url = apiConfig.developurl + `/users/changePassword`;
+    var url = apiConfig.productionurl + `/users/changePassword`;
     var data = {email: this.state.email, password: this.state.password, newPassword: this.state.newPassword };
     console.log(url);
 
