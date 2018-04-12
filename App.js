@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import { StyleSheet, Text, View, Image} from 'react-native';
 import { Stack, Scene, Tabs, Router, Actions, Drawer} from 'react-native-router-flux';
 
+
+import Login from './app/components/login';
+import Registration from './app/components/registration';
 import TabView from './app/components/TabView';
 import TabIcon from './app/components/TabIcon';
 import DrawerContent from './app/components/drawer/DrawerContent';
@@ -78,6 +81,19 @@ const RouterComponent = () => {
               key="tab_3_1"
               component={ChangePassword}
               title="Change Password"
+            />
+            </Stack>
+
+            <Stack
+              key="tab_4"
+              title="Tab #4"
+              icon={TabIcon}
+            >
+            <Scene
+              key="tab_4_1"
+              component={Login}
+              title="Login"
+
             />
             </Stack>
           </Scene>

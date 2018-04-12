@@ -31,6 +31,7 @@ class TabView extends React.Component {
         <Button onPress={() => { Actions.tab_1(); }}>Switch to Map</Button>
         <Button onPress={() => { Actions.tab_2(); }}>Switch to Registration Page</Button>
         <Button onPress={() => { Actions.tab_3(); }}>Switch to Reset Password Page</Button>
+        <Button onPress={() => { Actions.tab_4(); }}>Switch to Login Page</Button>
 
       </View>
     );
