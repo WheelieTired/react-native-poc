@@ -80,28 +80,32 @@ export default class ChangePassword extends Component {
     });
     const value = this._form.getValue();
     this.state = value;
-    const {email, password, newPassword } = this.state;
-    console.log("Email is " + email);
+
     var url = apiConfig.productionurl + `/users/changePassword`;
-    var data = {email: this.state.email, password: this.state.password, newPassword: this.state.newPassword };
-    console.log(url);
+
+    if(this.state != null){
+        const {email, password, newPassword } = this.state;
+
+        var data = {email: this.state.email, password: this.state.password, newPassword: this.state.newPassword };
+        console.log(url);
 
 
-    fetch(url, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        headers: new Headers({
-          'Content-Type': 'application/json',
-          'Client-ID': apiConfig.clientId,
-        }),
-        mode: 'no-cors',
-        body: JSON.stringify(data), // must match 'Content-Type' header
+        fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Client-ID': apiConfig.clientId,
+            }),
+            mode: 'no-cors',
+            body: JSON.stringify(data), // must match 'Content-Type' header
 
-      })
-      .then(response => {console.log("JSON OUTPUT", response);
-        return response.json();})
-      //.then(responseData => {console.log(responseData); return responseData;})
-      .catch(error => console.log('Error: This is your error', error))
-      .then(response => console.log('Success:', response)); // parses response to JSON
+        })
+        .then(response => {console.log("JSON OUTPUT", response);
+            return response.json();})
+        //.then(responseData => {console.log(responseData); return responseData;})
+        .catch(error => console.log('Error: This is your error', error))
+        .then(response => console.log('Success:', response)); // parses response to JSON
+    }
   }
 
   render() {
