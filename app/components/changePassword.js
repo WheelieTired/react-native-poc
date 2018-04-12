@@ -11,7 +11,7 @@ const Form = t.form.Form;
 
 const User = t.struct({
   email: t.String,
-  oldPassword: t.String,
+  password: t.String,
   newPassword: t.String,
   confirmNewPassword: t.String,
 });
@@ -82,19 +82,19 @@ export default class ChangePassword extends Component {
     this.state = value;
     const {email, password, newPassword } = this.state;
     console.log("Email is " + email);
-    var url = apiConfig.developurl + `/users?email=${encodeURIComponent(email)}`;
-    var data = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password };
+    var url = apiConfig.developurl + `/users/changePassword`;
+    var data = {email: this.state.email, password: this.state.password, newPassword: this.state.newPassword };
     console.log(url);
 
 
     fetch(url, {
-        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
         headers: new Headers({
-          //'Content-Type': 'application/json',
-          'Client-ID': apiConfig.clientId
+          'Content-Type': 'application/json',
+          'Client-ID': apiConfig.clientId,
         }),
         mode: 'no-cors',
-        //body: JSON.stringify(data), // must match 'Content-Type' header
+        body: JSON.stringify(data), // must match 'Content-Type' header
 
       })
       .then(response => {console.log("JSON OUTPUT", response);
@@ -102,29 +102,6 @@ export default class ChangePassword extends Component {
       //.then(responseData => {console.log(responseData); return responseData;})
       .catch(error => console.log('Error: This is your error', error))
       .then(response => console.log('Success:', response)); // parses response to JSON
-
-
-    /*usersApi.create( { firstName, lastName, email, password })
-    		.then(() => {
-    		    console.log('did i make it here?');
-    			session.authenticate(email, password)
-    			.then(() => {
-    				this.setState(this.initialState);
-    				//const routeStack = this.props.navigator.getCurrentRoutes();
-    				//this.props.navigator.jumpTo(routeStack[3]);
-    			});
-    		})
-    		.catch((exception) => {
-    			// Displays only the first error message
-    			const error = api.exceptionExtractError(exception);
-    			const newState = {
-    				isLoading: false,
-    				...(error ? { error } : {}),
-    			};
-    			this.setState(newState);
-    			console.log(exception);
-    		});
-    		console.log('complete');*/
   }
 
   render() {
