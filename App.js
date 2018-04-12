@@ -11,6 +11,7 @@ import DrawerContent from './app/components/drawer/DrawerContent';
 import Map from './app/components/map';
 import ChangePassword from './app/components/changePassword'
 import MenuIcon from './app/images/menu_burger.png';
+import Point from './app/components/point';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
 });
 
 const RouterComponent = () => {
+
   return (
     <Router>
       <Stack key="root">
@@ -55,6 +57,8 @@ const RouterComponent = () => {
                component={Map}
                title="Home"
             />
+
+
 
             </Stack>
 
