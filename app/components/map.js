@@ -101,7 +101,12 @@ const PointCollection = {
 export default class Map extends Component {
   constructor(props) {
     super(props);
-    this.centercoordinates = undefined;    
+    const {map} = this.props;
+    this.state = {
+      center: map.center,
+      zoom: map.zoom
+    };
+    this.center = undefined;    
   }
   
   myLocation() {
