@@ -25,6 +25,7 @@ const Router = StackNavigator({
 },
 {
     initialRouteName: 'menu',
+    headerMode: 'none'
 });
 
 export default class App extends Component{

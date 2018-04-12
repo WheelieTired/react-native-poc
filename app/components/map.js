@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
      flexDirection: 'column',
   },
   map:{
-  flex: .75,
+  flex: 1,
   },
 });
