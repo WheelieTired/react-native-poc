@@ -8,6 +8,7 @@ import TabIcon from './app/components/TabIcon';
 import DrawerContent from './app/components/drawer/DrawerContent';
 import Map from './app/components/map';
 import MenuIcon from './app/images/menu_burger.png';
+import Point from './app/components/point';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,6 +24,7 @@ const styles = StyleSheet.create({
 });
 
 const RouterComponent = () => {
+
   return (
     <Router>
     
@@ -53,6 +55,8 @@ const RouterComponent = () => {
                component={Map}
                title="Home"
             />
+
+
 
             </Stack>
 

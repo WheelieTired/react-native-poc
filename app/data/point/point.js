@@ -24,16 +24,16 @@ export function ReplicateFromDB(){
                                        }).on('denied', function (err) {
                                          // a document failed to replicate (e.g. due to permissions)
                                        }).on('complete', function (info) {
-                                         // handle complete
+                                         console.log("points copied from db");
                                        }).on('error', function (err) {
-                                         // handle error
+                                         console.log(err.message);
                                        });
 
     }
 
     export function GetPoints(){
         //remotedb.get('point/service/missoula-bike-source/c2qft6jv7').then(doc => console.log(doc));
-        ReplicateFromDB();
+        //ReplicateFromDB();
         var allDocs = db.allDocs().then(function (result) {
                       var docs = result.rows.map(function (row) {
                             return row.doc.location;
