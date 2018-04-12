@@ -4,26 +4,19 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import Registration from './app/components/registration';
 import Map from './app/components/map';
+import MenuIcon from './app/components/MenuIcon';
 
 const DrawerStack = DrawerNavigator({
-   map: { screen: Map },
-   register: { screen: Registration}
-   },{
-     initialRouteName: 'map'
-});
+    map: { screen: Map },
+    register: { screen: Registration}
+})
 
 const DrawerNavigation = StackNavigator({
   DrawerStack: { screen: DrawerStack }
 }, {
-  headerMode: 'float',
-  navigationOptions: (navigation) => ({
+  navigationOptions: ({navigation}) => ({
     headerStyle: {backgroundColor: 'white'},
-    drawerIcon: () => (
-      <Image
-        source={{uri: `https://dummyimage.com/60x60/000/fff.jpg&text=1`}}
-        style={{width: 30, height: 30, borderRadius: 15}}
-      />
-      ),
+    headerLeft:  <MenuIcon nav={navigation} />
   })
 })
 
@@ -32,11 +25,12 @@ const Router = StackNavigator({
 },
 {
     initialRouteName: 'menu',
-    headerMode: 'none'
-
 });
 
 export default class App extends Component{
+constructor(props){
+super(props);
+}
   render(){
     return <Router />;
   }
