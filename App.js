@@ -15,10 +15,10 @@ import MenuIcon from './app/components/MenuIcon';
     For now only screen are defined here with no other styling
 **/
 const DrawerStack = DrawerNavigator({
-    map: { screen: Map },
-    register: { screen: Registration },
-    login: { screen: Login },
-    pwdChange: { screen: ChangePassword }
+    Map: { screen: Map },
+    Register: { screen: Registration },
+    Login: { screen: Login },
+    ChangePassword: { screen: ChangePassword }
 })
 
 /**
@@ -49,24 +49,10 @@ const Router = StackNavigator({
 });
 
 export default class App extends Component{
-constructor(props){
-super(props);
-}
   render(){
     return <Router />;
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, backgroundColor: 'transparent', justifyContent: 'center',
-    alignItems: 'center',
-  },
-  tabBarStyle: {
-    backgroundColor: '#eee',
-  },
-  tabBarSelectedItemStyle: {
-    backgroundColor: '#ddd',
-  },
-});
+
 
