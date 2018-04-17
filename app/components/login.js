@@ -72,27 +72,30 @@ export default class Login extends Component {
     });
     const value = this._form.getValue();
     this.state = value;
-    const { email, password } = this.state;
+
     var url = apiConfig.productionurl + '/users/auth';
     // var url = 'http://192.168.0.111:1337' + '/users/auth';
-    var data = { name: this.state.email, password: this.state.password };
+    if(this.state != null){
+        const { email, password } = this.state;
+        var data = { name: this.state.email, password: this.state.password };
 
-    fetch(url, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        headers: new Headers({
-          'Content-Type': 'application/json',
-          'Client-ID': apiConfig.clientId
-        }),
-        mode: 'no-cors',
-        body: JSON.stringify(data), // must match 'Content-Type' header
+        fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Client-ID': apiConfig.clientId
+            }),
+            mode: 'no-cors',
+            body: JSON.stringify(data), // must match 'Content-Type' header
 
-      })
-      .then(response => response.json())
-      .catch(error => console.log('Error:', error))
-      .then(response => {
-          console.log('Success:', response);
-          Actions.tab_1();
+        })
+        .then(response => response.json())
+        .catch(error => console.log('Error:', error))
+        .then(response => {
+            console.log('Success:', response);
+            Actions.tab_1();
         }); // parses response to JSON
+    }
   }
 
   render() {
