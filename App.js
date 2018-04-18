@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image} from 'react-native';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 //Pages
-import AddPoint from '.app/components/login';
+import AddPoint from './app/components/AddPoint';
 import Login from './app/components/login';
 import Registration from './app/components/registration';
 import Map from './app/components/map';
