@@ -18,7 +18,7 @@ import MenuIcon from './app/components/MenuIcon';
 **/
 const DrawerStack = DrawerNavigator({
     Map: { screen: Map },
-    AddPoint: {screen: AddPoint}
+    AddPoint: {screen: AddPoint},
     Register: { screen: Registration },
     Login: { screen: Login },
     ChangePassword: { screen: ChangePassword }
