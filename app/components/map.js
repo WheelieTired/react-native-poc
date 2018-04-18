@@ -73,91 +73,66 @@ const layerStyles = Mapbox.StyleSheet.create({
 });
 
 export default class Map extends Component<{}> {
-
-
-
-    constructor(props){
-
-        super(props);
-
-        this.createPointCollection = this.createPointCollection.bind(this);
-
-        this.state = {
-            pointsLoaded: false,
-            points: null
-        }
+  constructor(props){
+    super(props);
+    this.createPointCollection = this.createPointCollection.bind(this);
+    this.state = {
+      pointsLoaded: false,
+      points: null
     }
+  }
 
+  createPointCollection(that){ }
 
+  componentDidMount(){
+    var that = this;
+      PouchDB.replicate(remotedb, db).on('change', function (info) {
+      // handle change
+      }).on('paused', function (err) {
+      // replication paused (e.g. replication up to date, user went offline)
+      }).on('active', function () {
+      // replicate resumed (e.g. new changes replicating, user went back online)
+      }).on('denied', function (err) {
+      // a document failed to replicate (e.g. due to permissions)       }).on('complete', function (info) {
+        console.log("points copied from db");
+        console.log("grabbing points from local db");
+          db.allDocs({ startkey: "point", endkey: "point\ufff0" }).then(function (result) {
+            var docs = result.rows.map(function (row) {
+              return row.doc.location;
+            });
+            console.log(docs);
+            const PointCollection = {
+              type: 'FeatureCollection',
+              features: []
+            };
 
-    createPointCollection(that){
+            for(var i=0; i<docs.length; i++){
+              if(docs[i]){
+                PointCollection.features.push({
+                  type: 'Feature',
+                  id: 'TestPoint',
+                  properties: {
+                    icon: 'circle-15',
+                  },
+                  geometry: {
+                     type: 'Point',
+                     coordinates: [docs[i][1], docs[i][0]]
+                  }
+                });
+                }
+              }
 
+              that.setState({
+                pointsLoaded: true,
+                points: PointCollection
+              });
 
-
-
-
-    }
-
-    componentDidMount(){
-        var that = this;
-
-        PouchDB.replicate(remotedb, db).on('change', function (info) {
-                                                 // handle change
-                                               }).on('paused', function (err) {
-                                                 // replication paused (e.g. replication up to date, user went offline)
-                                               }).on('active', function () {
-                                                 // replicate resumed (e.g. new changes replicating, user went back online)
-                                               }).on('denied', function (err) {
-                                                 // a document failed to replicate (e.g. due to permissions)
-                                               }).on('complete', function (info) {
-                                                 console.log("points copied from db");
-                                                console.log("grabbing points from local db");
-                                                db.allDocs({ startkey: "point", endkey: "point\ufff0" }).then(function (result) {
-                                                        var docs = result.rows.map(function (row) {
-                                                            return row.doc.location;
-                                                        });
-                                                        console.log(docs);
-                                                        const PointCollection = {
-                                                            type: 'FeatureCollection',
-                                                            features: []
-                                                            };
-
-                                                        for(var i=0; i<docs.length; i++){
-
-
-
-                                                            if(docs[i]){
-                                                                PointCollection.features.push(
-
-                                                                {
-                                                                    type: 'Feature',
-                                                                    id: 'TestPoint',
-                                                                    properties: {
-                                                                        icon: 'circle-15',
-                                                                    },
-                                                                    geometry: {
-                                                                        type: 'Point',
-                                                                        coordinates: [docs[i][1], docs[i][0]]
-                                                                    }
-                                                                }
-
-                                                                );
-                                                            }
-                                                        }
-
-                                                        that.setState({
-                                                            pointsLoaded: true,
-                                                            points: PointCollection
-                                                        });
-
-                                                        }).catch(function (err) {
-                                                            console.log(err);
-                                                            });
-                                               }).on('error', function (err) {
-                                                            console.log(err.message);
-                                                        });
-
-
+          }).catch(function (err) {
+            console.log(err);
+          });
+      }).on('error', function (err) {
+         console.log(err.message);
+      });
     }
 
 
@@ -173,30 +148,28 @@ export default class Map extends Component<{}> {
           centerCoordinate={[-77.6109, 43.1610]}
           style={styles.container}>
           <Mapbox.ShapeSource
-                          id="earthquakes"
-                          cluster
-                          clusterRadius={50}
-                          clusterMaxZoom={14}
-                          shape={this.state.points}
-                          >
-                          <Mapbox.SymbolLayer
-                            id="pointCount"
-                            style={layerStyles.clusterCount}
-                          />
-
-                          <Mapbox.CircleLayer
-                            id="clusteredPoints"
-                            belowLayerID="pointCount"
-                            filter={['has', 'point_count']}
-                            style={layerStyles.clusteredPoints}
-                          />
-
-                          <Mapbox.CircleLayer
-                            id="singlePoint"
-                            filter={['!has', 'point_count']}
-                            style={layerStyles.singlePoint}
-                          />
-                        </Mapbox.ShapeSource>
+            id="points"
+            cluster
+            clusterRadius={50}
+            clusterMaxZoom={14}
+            shape={this.state.points}
+          >
+          <Mapbox.SymbolLayer
+            id="pointCount"
+            style={layerStyles.clusterCount}
+          />
+          <Mapbox.CircleLayer
+            id="clusteredPoints"
+            belowLayerID="pointCount"
+            filter={['has', 'point_count']}
+            style={layerStyles.clusteredPoints}
+          />
+          <Mapbox.CircleLayer
+            id="singlePoint"
+             filter={['!has', 'point_count']}
+             style={layerStyles.singlePoint}
+          />
+          </Mapbox.ShapeSource>
         </Mapbox.MapView>
       </View>
     );
