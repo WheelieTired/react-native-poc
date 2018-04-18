@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, ScrollView, Image } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+//import { Actions } from 'react-native-router-flux';
 
 import t from 'tcomb-form-native'; // 0.6.9
 import * as usersApi from '../data/users/api';

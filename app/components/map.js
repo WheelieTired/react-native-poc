@@ -1,7 +1,7 @@
 /* Temporary file to from tutorial to test out environment */
 
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Button, Alert } from 'react-native';
 import Mapbox from '@mapbox/react-native-mapbox-gl';
 import {GetPoints, ReplicateFromDB} from '../data/point/point';
 //import markerIcon from '../images/marker-icon.png';
@@ -73,13 +73,24 @@ const layerStyles = Mapbox.StyleSheet.create({
 });
 
 export default class Map extends Component<{}> {
+
   constructor(props){
     super(props);
-    this.createPointCollection = this.createPointCollection.bind(this);
+
     this.state = {
       pointsLoaded: false,
-      points: null
-    }
+      points: null,
+      center: []
+    };
+
+    this.createPointCollection = this.createPointCollection.bind(this);
+    this.onRegionDidChange = this.onRegionDidChange.bind(this);
+  }
+
+  async onRegionDidChange() {
+    const { center } = await this._map.getCenter();
+    this.setState({center});
+    console.log(center);
   }
 
   createPointCollection(that){ }
@@ -93,7 +104,8 @@ export default class Map extends Component<{}> {
       }).on('active', function () {
       // replicate resumed (e.g. new changes replicating, user went back online)
       }).on('denied', function (err) {
-      // a document failed to replicate (e.g. due to permissions)       }).on('complete', function (info) {
+      // a document failed to replicate (e.g. due to permissions)
+      }).on('complete', function (info) {
         console.log("points copied from db");
         console.log("grabbing points from local db");
           db.allDocs({ startkey: "point", endkey: "point\ufff0" }).then(function (result) {
@@ -135,17 +147,32 @@ export default class Map extends Component<{}> {
       });
     }
 
+    _handleSumbit = () =>{
+
+    }
+
+    _onPressButton() {
+        //const center = this._map.getVisibileBounds();
+        //console.log(center);
+        //Alert.alert(center);
+        console.log(this._map);
+        //this.map.zoomTo(16);
+
+      }
+
 
 
   render() {
     if(this.state.pointsLoaded){
     //console.log('state', this.state);
+    var that = this;
     return (
       <View style={styles.container}>
         <Mapbox.MapView
           styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
           zoomLevel={1}
           centerCoordinate={[-77.6109, 43.1610]}
+          onRegionDidChange={this.onRegionDidChange}
           style={styles.container}>
           <Mapbox.ShapeSource
             id="points"
@@ -171,6 +198,10 @@ export default class Map extends Component<{}> {
           />
           </Mapbox.ShapeSource>
         </Mapbox.MapView>
+        <Button
+                    onPress={this._onPressButton}
+                    title="Press Me"
+                  />
       </View>
     );
     }
