@@ -79,18 +79,18 @@ export default class Map extends Component<{}> {
 
     this.state = {
       pointsLoaded: false,
-      points: null,
-      center: []
+      center: [-77.6109, 43.1610],
+      points: null
     };
 
     this.createPointCollection = this.createPointCollection.bind(this);
     this.onRegionDidChange = this.onRegionDidChange.bind(this);
+    this._onPressButton = this._onPressButton.bind(this);
   }
 
   async onRegionDidChange() {
-    const { center } = await this._map.getCenter();
+    const center = await this._map.getCenter();
     this.setState({center});
-    console.log(center);
   }
 
   createPointCollection(that){ }
@@ -147,17 +147,9 @@ export default class Map extends Component<{}> {
       });
     }
 
-    _handleSumbit = () =>{
-
-    }
 
     _onPressButton() {
-        //const center = this._map.getVisibileBounds();
-        //console.log(center);
-        //Alert.alert(center);
-        console.log(this._map);
-        //this.map.zoomTo(16);
-
+        console.log(this.state.center);
       }
 
 
@@ -173,6 +165,7 @@ export default class Map extends Component<{}> {
           zoomLevel={1}
           centerCoordinate={[-77.6109, 43.1610]}
           onRegionDidChange={this.onRegionDidChange}
+          ref={(c) => (this._map = c)}
           style={styles.container}>
           <Mapbox.ShapeSource
             id="points"
