@@ -3,10 +3,12 @@ import { StyleSheet, Text, View, Image} from 'react-native';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 //Pages
+import AddPoint from '.app/components/login';
 import Login from './app/components/login';
 import Registration from './app/components/registration';
 import Map from './app/components/map';
 import ChangePassword from './app/components/changePassword'
+
 
 //Menu Icon
 import MenuIcon from './app/components/MenuIcon';
@@ -16,6 +18,7 @@ import MenuIcon from './app/components/MenuIcon';
 **/
 const DrawerStack = DrawerNavigator({
     Map: { screen: Map },
+    AddPoint: {screen: AddPoint},
     Register: { screen: Registration },
     Login: { screen: Login },
     ChangePassword: { screen: ChangePassword }
