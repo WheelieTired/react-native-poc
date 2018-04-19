@@ -93,7 +93,7 @@ export default class Login extends Component {
         .catch(error => console.log('Error:', error))
         .then(response => {
             console.log('Success:', response);
-            Actions.tab_1();
+            this.props.navigation.navigate('Map');
         }); // parses response to JSON
     }
   }
@@ -121,7 +121,7 @@ export default class Login extends Component {
             title="Register"
             style={styles.button}
             color='#757575'
-            onPress={() => { this.props.navigation.navigate('Register'); }}
+            onPress={() => { this.props.navigation.navigate('Register') }}
         />
       </ScrollView>
       </View>
