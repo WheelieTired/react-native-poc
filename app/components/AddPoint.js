@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Button, ScrollView, Image } from 'react-native';
 import TcombMultiSelect from './MultiSelect';
+import PouchDB from 'pouchdb-react-native'
 
 import t from 'tcomb-form-native'; // 0.6.9
 
 const Form = t.form.Form;
 
 const Point = t.struct({
+  name: t.String,
   description: t.String,
   phone: t.String,
   address: t.String,
@@ -40,6 +42,10 @@ const formStyles = {
 
 const options = {
   fields: {
+
+    name:{
+      error: 'Please enter a name'
+    },
     description: {
       error: 'Please enter a valid description'
     },
@@ -96,11 +102,12 @@ export default class AddPoint extends Component<{}> {
       		this.initialState = {
       			isLoading: false,
       			error: null,
-      			email: '',
-      			password: '',
-      			confirmPassword: '',
-      			firstName: '',
-      			lastName: '',
+      			name: '',
+      			description: '',
+      			address: '',
+      			website: '',
+      			ammenity: [],
+      			point: [-77.6109, 43.1610]
       		};
       		this.state = this.initialState;
     }
@@ -114,12 +121,34 @@ export default class AddPoint extends Component<{}> {
         this.state = value;
 
         if(this.state != null){
-            //const { firstName, lastName, email, password } = this.state;
-            //var data = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password };
-        console.log("not null", this.state);
+
+            const { name, description, phone, address, website, ammenity, point } = this.state;
+            var data = {
+                _id: 'point/service/' + String(name).trim(),
+                comments: [],
+                amenities: ammenity,
+                schedule: { default: [] },
+                seasonal: false,
+                created_at: new Date().toLocaleString(),
+                updated_at: new Date().toLocaleString(),
+                location: [43.1610, -77.6109],
+                name: name,
+                type: ammenity[0],
+                description: description
+            }
+            var pouchDB = new PouchDB('http://btc-admin:damsel-custard-tramway-ethanol@52.91.46.42:5984/points');
+
+            pouchDB.put(data, function(err, body, header){
+                        if (err) {
+                            console.log('error:', err.message);
+                        }
+                        else{
+                            console.log('point successfully added');
+                        }
+                     });
 
         }
-        console.log(this.state);
+        //console.log(this.state);
         }
 
     render(){
