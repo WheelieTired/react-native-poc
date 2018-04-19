@@ -4,8 +4,9 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Button, Alert } from 'react-native';
 import Mapbox from '@mapbox/react-native-mapbox-gl';
 import {GetPoints, ReplicateFromDB} from '../data/point/point';
+import PointModal from './PointModal';
 //import markerIcon from '../images/marker-icon.png';
-import PouchDB from 'pouchdb-react-native'
+import PouchDB from 'pouchdb-react-native';
 
 const db = new PouchDB('points');
 const remotedb = new PouchDB('http://52.91.46.42:5984/points', {
@@ -22,9 +23,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  icon:{
-    flex:1,
-    //iconImage: {markerIcon},
+  buttons:{
+    flex:.2,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   }
 });
 
@@ -80,15 +82,23 @@ export default class Map extends Component<{}> {
     this.state = {
       pointsLoaded: false,
       center: [-77.6109, 43.1610],
-      points: null
+      points: null,
+      addPoint: false
     };
 
     this.createPointCollection = this.createPointCollection.bind(this);
     this.onRegionDidChange = this.onRegionDidChange.bind(this);
-    this._onPressButton = this._onPressButton.bind(this);
+    this.setPointLocation = this.setPointLocation.bind(this);
+    //this._onPressButton = this._onPressButton.bind(this);
   }
 
+
+
   async onRegionDidChange() {
+    const center = await this._map.getCenter();
+    this.setState({center});
+  }
+  async setPointLocation(){
     const center = await this._map.getCenter();
     this.setState({center});
   }
@@ -147,13 +157,6 @@ export default class Map extends Component<{}> {
       });
     }
 
-
-    _onPressButton() {
-        console.log(this.state.center);
-      }
-
-
-
   render() {
     if(this.state.pointsLoaded){
     //console.log('state', this.state);
@@ -164,7 +167,7 @@ export default class Map extends Component<{}> {
           styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
           zoomLevel={1}
           centerCoordinate={[-77.6109, 43.1610]}
-          onRegionDidChange={this.onRegionDidChange}
+
           ref={(c) => (this._map = c)}
           style={styles.container}>
           <Mapbox.ShapeSource
@@ -190,11 +193,15 @@ export default class Map extends Component<{}> {
              style={layerStyles.singlePoint}
           />
           </Mapbox.ShapeSource>
+          <Mapbox.PointAnnotation
+            id="AddPoint"
+            coordinate={that.state.center}
+          />
         </Mapbox.MapView>
-        <Button
-                    onPress={this._onPressButton}
-                    title="Press Me"
-                  />
+        <View style={styles.buttons}>
+          <Button onPress={that.setPointLocation} title='Update Point'/>
+          <Button onPress={() => that.props.navigation.navigate('AddPoint', {coord: that.state.center})} title='Add Point'/>
+        </View>
       </View>
     );
     }
