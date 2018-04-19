@@ -11,7 +11,7 @@ export default class MenuIcon extends Component<{}> {
 
   render() {
     return (
-      <TouchableHighlight onPress={() => this.state.navigation.navigate('DrawerOpen')}>
+      <TouchableHighlight onPress={() => this.state.navigation.navigate('DrawerToggle')}>
           <Image source={require('../images/menu_burger.png')} />
       </TouchableHighlight>
     );
