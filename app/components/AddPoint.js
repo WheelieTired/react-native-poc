@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Button, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, Button, ScrollView, Image, Alert } from 'react-native';
 import TcombMultiSelect from './MultiSelect';
 import PouchDB from 'pouchdb-react-native'
 
@@ -119,6 +119,7 @@ export default class AddPoint extends Component<{}> {
         });
         const value = this._form.getValue();
         this.state = value;
+        var that = this;
 
         if(this.state != null){
 
@@ -141,14 +142,21 @@ export default class AddPoint extends Component<{}> {
             pouchDB.put(data, function(err, body, header){
                         if (err) {
                             console.log('error:', err.message);
+                            Alert.alert(
+                              'Submittion Error',
+                              'There was an error with your point submission, please try again.',
+                              [
+                                {text: 'OK', onPress: () => console.log('OK Pressed')},
+                              ],
+                            )
                         }
                         else{
                             console.log('point successfully added');
+                            that.props.navigation.navigate('Map');
                         }
                      });
 
         }
-        //console.log(this.state);
         }
 
     render(){
