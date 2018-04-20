@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, ScrollView, Image } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+//import { Actions } from 'react-native-router-flux';
 
 import t from 'tcomb-form-native'; // 0.6.9
 import * as usersApi from '../data/users/api';
@@ -60,7 +60,7 @@ export default class Login extends Component {
   			isLoading: false,
   			error: null,
   			email: '',
-  			password: ''
+  			password: '',
   		};
   		this.state = this.initialState;
   }
@@ -93,7 +93,7 @@ export default class Login extends Component {
         .catch(error => console.log('Error:', error))
         .then(response => {
             console.log('Success:', response);
-            Actions.tab_1();
+            this.props.navigation.navigate('Map');
         }); // parses response to JSON
     }
   }
@@ -121,7 +121,7 @@ export default class Login extends Component {
             title="Register"
             style={styles.button}
             color='#757575'
-            onPress={() => { Actions.tab_2(); }}
+            onPress={() => { this.props.navigation.navigate('Register') }}
         />
       </ScrollView>
       </View>
