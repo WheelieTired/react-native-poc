@@ -193,15 +193,9 @@ export default class Map extends Component<{}> {
              style={layerStyles.singlePoint}
           />
           </Mapbox.ShapeSource>
-          <Mapbox.PointAnnotation
-            id="AddPoint"
-            coordinate={that.state.center}
-          />
+
         </Mapbox.MapView>
-        <View style={styles.buttons}>
-          <Button onPress={that.setPointLocation} title='Update Point'/>
-          <Button onPress={() => that.props.navigation.navigate('AddPoint', {coord: that.state.center})} title='Add Point'/>
-        </View>
+
       </View>
     );
     }
