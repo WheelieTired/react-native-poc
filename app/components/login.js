@@ -60,7 +60,7 @@ export default class Login extends Component {
   			isLoading: false,
   			error: null,
   			email: '',
-  			password: ''
+  			password: '',
   		};
   		this.state = this.initialState;
   }
@@ -121,7 +121,7 @@ export default class Login extends Component {
             title="Register"
             style={styles.button}
             color='#757575'
-            onPress={() => { Actions.tab_2(); }}
+            onPress={() => { this.props.navigation.navigate('Register'); }}
         />
       </ScrollView>
       </View>
