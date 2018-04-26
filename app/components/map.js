@@ -1,10 +1,18 @@
-/* Temporary file to from tutorial to test out environment */
-
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Button, Alert } from 'react-native';
 import Mapbox from '@mapbox/react-native-mapbox-gl';
+import {GetPoints, ReplicateFromDB} from '../data/point/point';
+import PointModal from './PointModal';
 //import markerIcon from '../images/marker-icon.png';
+import PouchDB from 'pouchdb-react-native';
 
+const db = new PouchDB('points');
+const remotedb = new PouchDB('http://52.91.46.42:5984/points', {
+    auth: {
+    username: 'btc-admin',
+    password: 'damsel-custard-tramway-ethanol'
+    }
+  });
 
 Mapbox.setAccessToken('pk.eyJ1IjoiYWNhLW1hcGJveCIsImEiOiJjajhkbmNjN2YwcXg0MnhzZnU2dG93NmdqIn0.jEUoPlUBoAsHAZw5GKpgiQ');
 
@@ -13,11 +21,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  icon:{
-    flex:1,
-    //iconImage: {markerIcon},
+  buttons:{
+    flex:.2,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   }
 });
+
 
 const layerStyles = Mapbox.StyleSheet.create({
   singlePoint: {
@@ -62,57 +72,32 @@ const layerStyles = Mapbox.StyleSheet.create({
   },
 });
 
-const PointCollection = {
-  type: 'FeatureCollection',
-  features: [
-    {
-      type: 'Feature',
-      id: 'TestPoint',
-      properties: {
-        icon: 'circle-15',
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [-78, 39],
-      },
-    },{
-      type: 'Feature',
-      id: 'TestPoint1',
-      properties: {
-        icon: 'circle-15',
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [-77, 39],
-      },
-    },{
-      type: 'Feature',
-      id: 'TestPoint2',
-      properties: {
-        icon: 'circle-15',
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [-70, 40],
-      },
-    },
-    ]};
+export default class Map extends Component<{}> {
 
-export default class Map extends Component {
-  constructor(props) {
+  constructor(props){
     super(props);
-    this.centercoordinates = undefined;    
+
+    this.state = {
+      pointsLoaded: false,
+      center: [-77.6109, 43.1610], //backup coordiantes in case user location does not pass through
+      points: null,
+      addPoint: false
+    };
+
+    this.createPointCollection = this.createPointCollection.bind(this);
+    this.onRegionDidChange = this.onRegionDidChange.bind(this);
+    this.setPointLocation = this.setPointLocation.bind(this);
+    //this._onPressButton = this._onPressButton.bind(this);
   }
-  
-  myLocation() {
+
+  findMyLocation() {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords;
-        this.centercoordinates = [longitude, latitude]; // eslint-disable-line no-unused-vars
-        console.log(this.centercoordinates);
+        this.state.center = [longitude, latitude]; // eslint-disable-line no-unused-vars
+        console.log(this.state.center);
       },
       (err) => {
-        alert('Please turn on location services to find your location');
         console.error(err);
       },
       {
@@ -121,44 +106,83 @@ export default class Map extends Component {
     );
   }
 
-  getInitialState() {
-    myLocation();
-    return {
-      mapLocation: {
-        latitude: 0,
-        longitude: 0
-      },
-      center: {
-        latitude: this.centercoordinates[1],
-        longitude: this.centercoordinates[0]
-      },
-      zoom: 1,
-      direction: 0
+  async onRegionDidChange() {
+    const center = await this._map.getCenter();
+    this.setState({center});
+  }
+  async setPointLocation(){
+    const center = await this._map.getCenter();
+    this.setState({center});
+  }
+
+  createPointCollection(that){ }
+
+  componentDidMount(){
+    var that = this;
+      PouchDB.replicate(remotedb, db).on('change', function (info) {
+      // handle change
+      }).on('paused', function (err) {
+      // replication paused (e.g. replication up to date, user went offline)
+      }).on('active', function () {
+      // replicate resumed (e.g. new changes replicating, user went back online)
+      }).on('denied', function (err) {
+      // a document failed to replicate (e.g. due to permissions)
+      }).on('complete', function (info) {
+        console.log("points copied from db");
+        console.log("grabbing points from local db");
+          db.allDocs({ startkey: "point", endkey: "point\ufff0" }).then(function (result) {
+            var docs = result.rows.map(function (row) {
+              return row.doc.location;
+            });
+            console.log(docs);
+            const PointCollection = {
+              type: 'FeatureCollection',
+              features: []
+            };
+
+            for(var i=0; i<docs.length; i++){
+              if(docs[i]){
+                PointCollection.features.push({
+                  type: 'Feature',
+                  id: 'TestPoint',
+                  properties: {
+                    icon: 'circle-15',
+                  },
+                  geometry: {
+                     type: 'Point',
+                     coordinates: [docs[i][1], docs[i][0]]
+                  }
+                });
+                }
+              }
+
+              that.setState({
+                pointsLoaded: true,
+                points: PointCollection
+              });
+
+          }).catch(function (err) {
+            console.log(err);
+          });
+      }).on('error', function (err) {
+         console.log(err.message);
+      });
     }
-  }
-
-  onChange(location) {
-    this.setState({ mapLocation: location});
-  }
-
-  onOpenAnnotation(annotaion) {
-    console.log(annotation)
-  }
-
-  onUpdateUserLocation(location) {
-    console.log(location)
-  }
 
   render() {
-    this.getInitialState();
+    this.findMyLocation(); //Grab users current location and use that to center the map if available
+    if(this.state.pointsLoaded){
+    //console.log('state', this.state);
+    var that = this;
     return (
       <View style={styles.container}>
         <Mapbox.MapView
           styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
           zoomLevel={1}
-          centerCoordinate={this.centercoordinates}
+          centerCoordinate={this.state.center}
+          ref={(c) => (this._map = c)}
           style={styles.container}
-          onDidFinishLoadingStyle={(map) => {
+          onDidFinishLoadingStyle={(map = this._map) => {
             map.addControl(new MapboxGl.NavigationControl());
             map.addControl(new MapboxGl.GeolocateControl({
               positionOptions: {
@@ -168,32 +192,37 @@ export default class Map extends Component {
             }));
           }}>
           <Mapbox.ShapeSource
-            id="earthquakes"
+            id="points"
             cluster
             clusterRadius={50}
             clusterMaxZoom={14}
-            shape={PointCollection}
-            >
-            <Mapbox.SymbolLayer
-              id="pointCount"
-              style={layerStyles.clusterCount}
-            />
-
-            <Mapbox.CircleLayer
-              id="clusteredPoints"
-              belowLayerID="pointCount"
-              filter={['has', 'point_count']}
-              style={layerStyles.clusteredPoints}
-            />
-
-            <Mapbox.CircleLayer
-              id="singlePoint"
-              filter={['!has', 'point_count']}
-              style={layerStyles.singlePoint}
-            />
+            shape={this.state.points}
+          >
+          <Mapbox.SymbolLayer
+            id="pointCount"
+            style={layerStyles.clusterCount}
+          />
+          <Mapbox.CircleLayer
+            id="clusteredPoints"
+            belowLayerID="pointCount"
+            filter={['has', 'point_count']}
+            style={layerStyles.clusteredPoints}
+          />
+          <Mapbox.CircleLayer
+            id="singlePoint"
+             filter={['!has', 'point_count']}
+             style={layerStyles.singlePoint}
+          />
           </Mapbox.ShapeSource>
+
         </Mapbox.MapView>
+
       </View>
     );
+    }
+    else{
+        console.log('no points', this.state);
+        return null;
+    }
   }
 }
