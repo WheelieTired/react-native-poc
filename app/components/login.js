@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, ScrollView, Image } from 'react-native';
+//import { Actions } from 'react-native-router-flux';
 
 import t from 'tcomb-form-native'; // 0.6.9
 import * as usersApi from '../data/users/api';
@@ -9,12 +10,9 @@ import apiConfig from '../services/api/config';
 
 const Form = t.form.Form;
 
-const User = t.struct({
+const Account = t.struct({
   email: t.String,
-  password: t.String,
-  confirmPassword: t.String,
-  firstName: t.String,
-  lastName: t.String
+  password: t.String
 });
 
 const formStyles = {
@@ -47,22 +45,13 @@ const options = {
       error: 'Please enter a valid email'
     },
     password: {
-      error: 'Please enter a password that is at least 3 characters'
-    },
-    confirmPassword: {
-      error: 'Password field does not match',
-    },
-    firstName: {
-          error: 'Please enter a valid first name',
-    },
-    lastName: {
-          error: 'Please enter a valid last name',
-    },
+      error: 'Please enter your password'
+    }
   },
   stylesheet: formStyles,
 };
 
-export default class Registration extends Component {
+export default class Login extends Component {
 
   constructor(props) {
   		super(props);
@@ -72,25 +61,23 @@ export default class Registration extends Component {
   			error: null,
   			email: '',
   			password: '',
-  			confirmPassword: '',
-  			firstName: '',
-  			lastName: '',
   		};
   		this.state = this.initialState;
   }
 
-  handleSubmit = () => {
+  loginSubmit = () => {
     this.setState({
         isLoading: true,
         error: '',
     });
     const value = this._form.getValue();
     this.state = value;
-    var url = apiConfig.productionurl + '/users';
 
+    var url = apiConfig.productionurl + '/users/auth';
+    // var url = 'http://192.168.0.111:1337' + '/users/auth';
     if(this.state != null){
-        const { firstName, lastName, email, password } = this.state;
-        var data = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password };
+        const { email, password } = this.state;
+        var data = { name: this.state.email, password: this.state.password };
 
         fetch(url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -101,12 +88,15 @@ export default class Registration extends Component {
             mode: 'no-cors',
             body: JSON.stringify(data), // must match 'Content-Type' header
 
-            })
-            .then(response => response.json())
-            .catch(error => console.log('Error:', error))
-            .then(response => console.log('Success:', response)); // parses response to JSON
-        }
+        })
+        .then(response => response.json())
+        .catch(error => console.log('Error:', error))
+        .then(response => {
+            console.log('Success:', response);
+            this.props.navigation.navigate('Map');
+        }); // parses response to JSON
     }
+  }
 
   render() {
     return (
@@ -119,12 +109,19 @@ export default class Registration extends Component {
         />
         <Form
             ref={c => this._form = c}
-            type={User}
+            type={Account}
             options={options}
         />
         <Button
-            title="Sign Up!"
-            onPress={this.handleSubmit}
+            title="Login"
+            style={styles.button}
+            onPress={this.loginSubmit}
+        />
+        <Button
+            title="Register"
+            style={styles.button}
+            color='#757575'
+            onPress={() => { this.props.navigation.navigate('Register') }}
         />
       </ScrollView>
       </View>
@@ -143,4 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  button: {
+    margin: 20
+  }
 });

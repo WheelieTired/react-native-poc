@@ -90,6 +90,7 @@ export default class Map extends Component<{}> {
     //this._onPressButton = this._onPressButton.bind(this);
   }
 
+
   findMyLocation() {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -105,7 +106,6 @@ export default class Map extends Component<{}> {
       }
     );
   }
-
   async onRegionDidChange() {
     const center = await this._map.getCenter();
     this.setState({center});
