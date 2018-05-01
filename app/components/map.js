@@ -5,7 +5,8 @@ import { StyleSheet, View, Button, Alert } from 'react-native';
 import Mapbox from '@mapbox/react-native-mapbox-gl';
 import {GetPoints, ReplicateFromDB} from '../data/point/point';
 import PointModal from './PointModal';
-//import markerIcon from '../images/marker-icon.png';
+
+import markerIcon from '../images/marker-icon.png';
 import PouchDB from 'pouchdb-react-native';
 
 const db = new PouchDB('points');
@@ -33,12 +34,9 @@ const styles = StyleSheet.create({
 
 const layerStyles = Mapbox.StyleSheet.create({
   singlePoint: {
-    circleColor: 'green',
-    circleOpacity: 0.84,
-    circleStrokeWidth: 2,
-    circleStrokeColor: 'white',
-    circleRadius: 5,
-    circlePitchAlignment: 'map',
+    iconImage: markerIcon,
+    iconSize: 1,
+    iconAllowOverlap: true
   },
 
   clusteredPoints: {
@@ -187,7 +185,7 @@ export default class Map extends Component<{}> {
             filter={['has', 'point_count']}
             style={layerStyles.clusteredPoints}
           />
-          <Mapbox.CircleLayer
+          <Mapbox.SymbolLayer
             id="singlePoint"
              filter={['!has', 'point_count']}
              style={layerStyles.singlePoint}

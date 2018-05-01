@@ -106,6 +106,7 @@ export default class Registration extends Component {
             .catch(error => console.log('Error:', error))
             .then(response => console.log('Success:', response)); // parses response to JSON
         }
+
     }
 
   render() {
