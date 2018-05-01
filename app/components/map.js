@@ -74,6 +74,10 @@ const layerStyles = Mapbox.StyleSheet.create({
   },
 });
 
+
+
+
+
 export default class Map extends Component<{}> {
 
   constructor(props){
@@ -89,9 +93,24 @@ export default class Map extends Component<{}> {
     this.createPointCollection = this.createPointCollection.bind(this);
     this.onRegionDidChange = this.onRegionDidChange.bind(this);
     this.setPointLocation = this.setPointLocation.bind(this);
+    this.createOfflinePacke = this.createOfflinePack.bind(this);
     //this._onPressButton = this._onPressButton.bind(this);
   }
 
+  async createOfflinePack(){
+
+      const progressListener = (offlineRegion, status) => console.log(offlineRegion, status);
+      const errorListener = (offlineRegion, err) => console.log(offlineRegion, err);
+
+      await Mapbox.offlineManager.createPack({
+        name: 'offlinePack',
+        styleURL: 'mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn',
+        minZoom: 11,
+        maxZoom: 14,
+        bounds: [[-77.12233, 43.27614], [-78.04475, 42.71028]]
+      }, progressListener, errorListener)
+
+      }
 
 
   async onRegionDidChange() {
@@ -157,9 +176,11 @@ export default class Map extends Component<{}> {
       });
     }
 
+
+
   render() {
     if(this.state.pointsLoaded){
-    //console.log('state', this.state);
+    this.createOfflinePack();
     var that = this;
     return (
       <View style={styles.container}>
