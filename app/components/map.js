@@ -214,7 +214,19 @@ export default class Map extends Component<{}> {
              style={layerStyles.singlePoint}
           />
           </Mapbox.ShapeSource>
-
+          <MapButton
+              icon = {'my-location'}
+              color={'red'}
+              onPress={() => {
+                
+              }}
+            />
+            <MapButton
+              icon = {'filter-variant'}
+              color={'blue'}
+              onPress={() => {
+              }}
+            />
         </Mapbox.MapView>
 
       </View>
