@@ -7,7 +7,8 @@ import AddPoint from './app/components/AddPoint';
 import Login from './app/components/login';
 import Registration from './app/components/registration';
 import Map from './app/components/map';
-import ChangePassword from './app/components/changePassword'
+import ChangePassword from './app/components/changePassword';
+import AddAlert from './app/components/AddAlert';
 
 
 //Menu Icon
@@ -19,6 +20,7 @@ import MenuIcon from './app/components/MenuIcon';
 const DrawerStack = DrawerNavigator({
     Map: { screen: Map },
     AddPoint: {screen: AddPoint},
+    AddAlert: {screen: AddAlert},
     Register: { screen: Registration },
     Login: { screen: Login },
     ChangePassword: { screen: ChangePassword }
