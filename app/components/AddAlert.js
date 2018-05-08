@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Button, ScrollView, Image, Alert } from 'react-native';
 import TcombMultiSelect from './MultiSelect';
-import PouchDB from 'pouchdb-react-native'
+import PouchDB from 'pouchdb-react-native';
+import ngeohash from 'ngeohash';
 
 import t from 'tcomb-form-native'; // 0.6.9
 
@@ -91,8 +92,9 @@ export default class AddPoint extends Component<{}> {
         if(this.state != null){
 
             const { name, description, alerttype, point } = this.state;
+            var hash = ngeohash.encode(point[0],point[1]);
             var data = {
-                _id: 'point/alert/' + String(name).trim(),
+                _id: 'point/alert/' + String(name).trim() + '/' + hash,
                 comments: [],
                 type: alerttype,
                 created_at: new Date().toLocaleString(),
