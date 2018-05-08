@@ -9,8 +9,17 @@ import apiConfig from '../services/api/config';
 
 const Form = t.form.Form;
 
+function samePasswords(password, confirmPassword) {
+  return password === confirmPassword
+}
+
+const Email = t.refinement(t.String, email => {
+  const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
+  return reg.test(email);
+});
+
 const User = t.struct({
-  email: t.String,
+  email: Email,
   password: t.String,
   confirmPassword: t.String,
   firstName: t.String,
@@ -47,10 +56,14 @@ const options = {
       error: 'Please enter a valid email'
     },
     password: {
-      error: 'Please enter a password that is at least 3 characters'
+      error: 'Please enter a password that is at least 3 characters',
+      password: true,
+      secureTextEntry: true
     },
     confirmPassword: {
       error: 'Password field does not match',
+      password: true,
+      secureTextEntry: true
     },
     firstName: {
           error: 'Please enter a valid first name',
@@ -75,6 +88,7 @@ export default class Registration extends Component {
   			confirmPassword: '',
   			firstName: '',
   			lastName: '',
+  			options: options,
   		};
   		this.state = this.initialState;
   }
@@ -85,12 +99,26 @@ export default class Registration extends Component {
         error: '',
     });
     const value = this._form.getValue();
-    this.state = value;
+
     var url = apiConfig.productionurl + '/users';
 
-    if(this.state != null){
-        const { firstName, lastName, email, password } = this.state;
-        var data = { firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password };
+    if(value != null){
+        const { firstName, lastName, email, password, confirmPassword } = value;
+
+         if (password && confirmPassword && !samePasswords(password, confirmPassword)) {
+                this.setState({options: t.update(this.state.options, {
+                  fields: {
+                    confirmPassword: {
+                      hasError: { '$set': true },
+                      error: { '$set': 'Password must match' }
+                    }
+                  }
+            })})
+         }
+
+         else{
+
+        var data = { firstName: value.firstName, lastName: value.lastName, email: value.email, password: value.password };
 
         fetch(url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -106,8 +134,13 @@ export default class Registration extends Component {
             .catch(error => console.log('Error:', error))
             .then(response => console.log('Success:', response)); // parses response to JSON
         }
+        }
 
     }
+
+  onChange = (value) => {
+    this.setState({value})
+  }
 
   render() {
     return (
@@ -121,7 +154,9 @@ export default class Registration extends Component {
         <Form
             ref={c => this._form = c}
             type={User}
-            options={options}
+            options={this.state.options}
+            value={this.state.value}
+            onChange={this.onChange}
         />
         <Button
             title="Sign Up!"
