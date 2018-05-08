@@ -1,7 +1,7 @@
 /* Temporary file to from tutorial to test out environment */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Button, Alert } from 'react-native';
+import { StyleSheet, View, Button, Alert, Image } from 'react-native';
 import Mapbox from '@mapbox/react-native-mapbox-gl';
 import {GetPoints, ReplicateFromDB} from '../data/point/point';
 import PointModal from './PointModal';
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   }
 });
+
 
 
 const layerStyles = Mapbox.StyleSheet.create({
@@ -165,7 +166,7 @@ export default class Map extends Component<{}> {
           styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
           zoomLevel={1}
           centerCoordinate={[-77.6109, 43.1610]}
-
+          onRegionDidChange={this.onRegionDidChange}
           ref={(c) => (this._map = c)}
           style={styles.container}>
           <Mapbox.ShapeSource
@@ -190,11 +191,19 @@ export default class Map extends Component<{}> {
              filter={['!has', 'point_count']}
              style={layerStyles.singlePoint}
           />
+
           </Mapbox.ShapeSource>
+
+          <Mapbox.PointAnnotation
+            id="AddPoint"
+            coordinate={that.state.center}
+          />
 
         </Mapbox.MapView>
 
       </View>
+
+
     );
     }
     else{
