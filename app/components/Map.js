@@ -87,11 +87,11 @@ export default class Map extends Component<{}> {
     };
 
     this.createPointCollection = this.createPointCollection.bind(this);
-    this.setPointLocation = this.setPointLocation.bind(this);
+    this.onRegionDidChange = this.onRegionDidChange.bind(this);
     //this._onPressButton = this._onPressButton.bind(this);
   }
 
-  async setPointLocation(){
+  async onRegionDidChange(){
     const center = await this._map.getCenter();
     this.setState({center});
   }
