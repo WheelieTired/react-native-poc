@@ -85,7 +85,7 @@ export default class Map extends Component<{}> {
       center: [-77.6109, 43.1610],
       centerPoint: null,
       points: null,
-      addPoint: true
+      addPoint: false
     };
 
     this.createPointCollection = this.createPointCollection.bind(this);
@@ -153,7 +153,7 @@ export default class Map extends Component<{}> {
     }
 
   render() {
-    if(this.state.pointsLoaded){
+    if(this.state.pointsLoaded && this.state.addPoint){
     //console.log('state', this.state);
     var that = this;
     return (
@@ -202,6 +202,43 @@ export default class Map extends Component<{}> {
         }}/>}
         </View>
     );
+    }
+    else if(this.state.pointsLoaded){
+        return (
+        <View style={styles.container}>
+            <Mapbox.MapView
+            styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
+            zoomLevel={1}
+            centerCoordinate={[-77.6109, 43.1610]}
+            ref={(c) => (this._map = c)}
+            style={styles.container}>
+            <Mapbox.ShapeSource
+                id="points"
+                cluster
+                clusterRadius={35}
+                clusterMaxZoom={14}
+                shape={this.state.points}
+            >
+            <Mapbox.SymbolLayer
+                id="pointCount"
+                style={layerStyles.clusterCount}
+            />
+            <Mapbox.CircleLayer
+                id="clusteredPoints"
+                belowLayerID="pointCount"
+                filter={['has', 'point_count']}
+                style={layerStyles.clusteredPoints}
+            />
+            <Mapbox.SymbolLayer
+                id="singlePoint"
+                filter={['!has', 'point_count']}
+                style={layerStyles.singlePoint}
+            />
+
+            </Mapbox.ShapeSource>
+            </Mapbox.MapView>
+        </View>
+        );
     }
     else{
         console.log('no points', this.state);
