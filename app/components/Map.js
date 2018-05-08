@@ -25,12 +25,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttons:{
-    flex: 1,
+    flex: .05,
     flexDirection: 'row',
+    justifyContent: 'center',
 
   }
 });
-
 
 
 const layerStyles = Mapbox.StyleSheet.create({
@@ -197,7 +197,8 @@ export default class Map extends Component<{}> {
         </Mapbox.MapView>
         <View style={styles.buttons}>
           <Button
-            title='Cancel Add'
+            title='Cancel'
+            style={{width: '33%'}}
             onPress={() => {
               this.setState({showAddPoint: false})
               this.props.nav.navigate('Map')
@@ -206,6 +207,7 @@ export default class Map extends Component<{}> {
 
           <Button
             title='Add Alert'
+            style={{width: '33%'}}
             onPress={() => {
               this.setState({showAddPoint: false})
               console.log(this.state.center)
@@ -213,10 +215,13 @@ export default class Map extends Component<{}> {
             }}
           />
 
-          <Button title='Add Point' onPress={() => {
-            this.setState({showAddPoint: false})
-            console.log(this.state.center)
-            this.props.nav.navigate('AddPointForm', {point: this.state.center})
+          <Button
+            title='Add Point'
+            style={{width: '33%'}}
+            onPress={() => {
+              this.setState({showAddPoint: false})
+              console.log(this.state.center)
+              this.props.nav.navigate('AddPointForm', {point: this.state.center})
           }}/>
 
 
