@@ -15,7 +15,7 @@ export default class MapContainer extends Component<{}> {
   render(){
   return(
     <View style={styles.container}>
-        <Map addPoint={true}/>
+        <Map showAddPoint={true}/>
     </View>
   )}
 }

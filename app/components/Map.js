@@ -85,7 +85,6 @@ export default class Map extends Component<{}> {
       center: [-77.6109, 43.1610],
       centerPoint: null,
       points: null,
-      addPoint: false
     };
 
     this.createPointCollection = this.createPointCollection.bind(this);
@@ -153,8 +152,8 @@ export default class Map extends Component<{}> {
     }
 
   render() {
-    if(this.state.pointsLoaded && this.state.addPoint){
-    //console.log('state', this.state);
+    if(this.state.pointsLoaded && this.props.showAddPoint){
+    console.log('state', this.state);
     var that = this;
     return (
             <View style={styles.container}>
@@ -196,10 +195,10 @@ export default class Map extends Component<{}> {
             coordinate={that.state.center}
           />
         </Mapbox.MapView>
-        {this.state.addPoint && <Button title='Add Point' onPress={() => {
-          this.setState({AddPoint: true})
+        <Button title='Add Point' onPress={() => {
+          this.setState({showAddPoint: false})
           this.props.navigation.navigate('AddPointForm')
-        }}/>}
+        }}/>
         </View>
     );
     }
