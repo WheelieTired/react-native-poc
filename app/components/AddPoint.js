@@ -14,6 +14,7 @@ const Point = t.struct({
   address: t.String,
   website: t.String,
   ammenity: t.list(t.String)
+
 });
 
 const formStyles = {
@@ -106,9 +107,14 @@ export default class AddPoint extends Component<{}> {
       	  address: '',
       	  website: '',
       	  ammenity: [],
-      	  point: [-77.6109, 43.1610]
+      	  location: []
       	};
       	this.state = this.initialState;
+      	this.state.location = this.props.navigation.state.params.point;
+      	//console.log("HERE IS THE LOCATION");
+      	//console.log(this.props.navigation.state.params.point);
+      	//console.log(this.state.location);
+
     }
 
     handleSubmit = () => {
@@ -117,12 +123,14 @@ export default class AddPoint extends Component<{}> {
             error: '',
         });
         const value = this._form.getValue();
+
         this.state = value;
+
         var that = this;
 
         if(this.state != null){
 
-            const { name, description, phone, address, website, ammenity, point } = this.state;
+            const { name, description, phone, address, website, ammenity } = this.state;
             var data = {
                 _id: 'point/service/' + String(name).trim(),
                 comments: [],
@@ -131,7 +139,7 @@ export default class AddPoint extends Component<{}> {
                 seasonal: false,
                 created_at: new Date().toLocaleString(),
                 updated_at: new Date().toLocaleString(),
-                location: point,
+                location: [this.props.navigation.state.params.point[1],this.props.navigation.state.params.point[0]],
                 name: name,
                 type: ammenity[0],
                 description: description

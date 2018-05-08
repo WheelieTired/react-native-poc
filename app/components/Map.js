@@ -197,7 +197,8 @@ export default class Map extends Component<{}> {
         </Mapbox.MapView>
         <Button title='Add Point' onPress={() => {
           this.setState({showAddPoint: false})
-          this.props.navigation.navigate('AddPointForm')
+          console.log(this.state.center)
+          this.props.nav.navigate('AddPointForm', {point: this.state.center})
         }}/>
         </View>
     );
