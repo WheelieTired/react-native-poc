@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Button, Alert } from 'react-native';
 import Mapbox from '@mapbox/react-native-mapbox-gl';
-import {GetPoints, ReplicateFromDB} from '../data/point/point';
+import { GetPoints, ReplicateFromDB } from '../data/point/point';
 import PointModal from './PointModal';
+import MapButton from './MapButtons';
+import { TouchableOpacity } from 'react-native';
 //import markerIcon from '../images/marker-icon.png';
 import PouchDB from 'pouchdb-react-native';
 
 const db = new PouchDB('points');
 const remotedb = new PouchDB('http://52.91.46.42:5984/points', {
-    auth: {
+  auth: {
     username: 'btc-admin',
     password: 'damsel-custard-tramway-ethanol'
-    }
-  });
+  }
+});
 
 Mapbox.setAccessToken('pk.eyJ1IjoiYWNhLW1hcGJveCIsImEiOiJjajhkbmNjN2YwcXg0MnhzZnU2dG93NmdqIn0.jEUoPlUBoAsHAZw5GKpgiQ');
 
@@ -21,8 +23,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  buttons:{
-    flex:.2,
+  buttons: {
+    flex: .2,
     flexDirection: 'row',
     flexWrap: 'wrap',
   }
@@ -74,7 +76,7 @@ const layerStyles = Mapbox.StyleSheet.create({
 
 export default class Map extends Component<{}> {
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -108,133 +110,119 @@ export default class Map extends Component<{}> {
   }
   async onRegionDidChange() {
     const center = await this._map.getCenter();
-    this.setState({center});
+    this.setState({ center });
   }
-  async setPointLocation(){
+  async setPointLocation() {
     const center = await this._map.getCenter();
-    this.setState({center});
+    this.setState({ center });
   }
 
-  createPointCollection(that){ }
+  createPointCollection(that) { }
 
-  componentDidMount(){
+  componentDidMount() {
     var that = this;
-      PouchDB.replicate(remotedb, db).on('change', function (info) {
+    PouchDB.replicate(remotedb, db).on('change', function (info) {
       // handle change
-      }).on('paused', function (err) {
+    }).on('paused', function (err) {
       // replication paused (e.g. replication up to date, user went offline)
-      }).on('active', function () {
+    }).on('active', function () {
       // replicate resumed (e.g. new changes replicating, user went back online)
-      }).on('denied', function (err) {
+    }).on('denied', function (err) {
       // a document failed to replicate (e.g. due to permissions)
-      }).on('complete', function (info) {
-        console.log("points copied from db");
-        console.log("grabbing points from local db");
-          db.allDocs({ startkey: "point", endkey: "point\ufff0" }).then(function (result) {
-            var docs = result.rows.map(function (row) {
-              return row.doc.location;
-            });
-            console.log(docs);
-            const PointCollection = {
-              type: 'FeatureCollection',
-              features: []
-            };
+    }).on('complete', function (info) {
+      console.log("points copied from db");
+      console.log("grabbing points from local db");
+      db.allDocs({ startkey: "point", endkey: "point\ufff0" }).then(function (result) {
+        var docs = result.rows.map(function (row) {
+          return row.doc.location;
+        });
+        console.log(docs);
+        const PointCollection = {
+          type: 'FeatureCollection',
+          features: []
+        };
 
-            for(var i=0; i<docs.length; i++){
-              if(docs[i]){
-                PointCollection.features.push({
-                  type: 'Feature',
-                  id: 'TestPoint',
-                  properties: {
-                    icon: 'circle-15',
-                  },
-                  geometry: {
-                     type: 'Point',
-                     coordinates: [docs[i][1], docs[i][0]]
-                  }
-                });
-                }
+        for (var i = 0; i < docs.length; i++) {
+          if (docs[i]) {
+            PointCollection.features.push({
+              type: 'Feature',
+              id: 'TestPoint',
+              properties: {
+                icon: 'circle-15',
+              },
+              geometry: {
+                type: 'Point',
+                coordinates: [docs[i][1], docs[i][0]]
               }
+            });
+          }
+        }
 
-              that.setState({
-                pointsLoaded: true,
-                points: PointCollection
-              });
+        that.setState({
+          pointsLoaded: true,
+          points: PointCollection
+        });
 
-          }).catch(function (err) {
-            console.log(err);
-          });
-      }).on('error', function (err) {
-         console.log(err.message);
+      }).catch(function (err) {
+        console.log(err);
       });
-    }
+    }).on('error', function (err) {
+      console.log(err.message);
+    });
+  }
 
   render() {
     this.findMyLocation(); //Grab users current location and use that to center the map if available
-    if(this.state.pointsLoaded){
-    //console.log('state', this.state);
-    var that = this;
-    return (
-      <View style={styles.container}>
-        <Mapbox.MapView
-          styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
-          zoomLevel={1}
-          centerCoordinate={this.state.center}
-          ref={(c) => (this._map = c)}
-          style={styles.container}
-          onDidFinishLoadingStyle={(map = this._map) => {
-            map.addControl(new MapboxGl.NavigationControl());
-            map.addControl(new MapboxGl.GeolocateControl({
-              positionOptions: {
-                enableHighAccuracy: true
-              },
-              trackUserLocation: true
-            }));
-          }}>
-          <Mapbox.ShapeSource
-            id="points"
-            cluster
-            clusterRadius={50}
-            clusterMaxZoom={14}
-            shape={this.state.points}
+    if (this.state.pointsLoaded) {
+      //console.log('state', this.state);
+      var that = this;
+      return (
+        <View style={styles.container}>
+        <MapButton
+                name={'my-location'}
+                color={'blue'}
+                onPress={() => {
+                  this._map.flyTo(this.state.center)
+                }}
+              />
+          <Mapbox.MapView
+            styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
+            zoomLevel={1}
+            centerCoordinate={this.state.center}
+            ref={(c) => (this._map = c)}
+            style={styles.container}
           >
-          <Mapbox.SymbolLayer
-            id="pointCount"
-            style={layerStyles.clusterCount}
-          />
-          <Mapbox.CircleLayer
-            id="clusteredPoints"
-            belowLayerID="pointCount"
-            filter={['has', 'point_count']}
-            style={layerStyles.clusteredPoints}
-          />
-          <Mapbox.CircleLayer
-            id="singlePoint"
-             filter={['!has', 'point_count']}
-             style={layerStyles.singlePoint}
-          />
-          </Mapbox.ShapeSource>
-          <MapButton
-              icon = {'my-location'}
-              color={'red'}
-              onPress={() => {
-                
-              }}
-            />
-            <MapButton
-              icon = {'filter-variant'}
-              color={'blue'}
-              onPress={() => {
-              }}
-            />
-        </Mapbox.MapView>
-
-      </View>
-    );
+            <Mapbox.ShapeSource
+              id="points"
+              cluster
+              clusterRadius={50}
+              clusterMaxZoom={14}
+              shape={this.state.points}
+            >
+              <Mapbox.SymbolLayer
+                id="pointCount"
+                style={layerStyles.clusterCount}
+              />
+              <Mapbox.CircleLayer
+                id="clusteredPoints"
+                belowLayerID="pointCount"
+                filter={['has', 'point_count']}
+                style={layerStyles.clusteredPoints}
+              />
+              <Mapbox.CircleLayer
+                id="singlePoint"
+                filter={['!has', 'point_count']}
+                style={layerStyles.singlePoint}
+              />
+            </Mapbox.ShapeSource>
+          </Mapbox.MapView>
+          
+        </View>
+      );
     }
-    else{
-        console.log('no points', this.state);
-        return null;
+    else {
+      console.log('no points', this.state);
+      return null;
     }
   }
 }
