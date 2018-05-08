@@ -3,6 +3,8 @@ import { StyleSheet, Text, TouchableHighlight, View, Button } from "react-native
 import Modal from "react-native-modal";
 import MapboxGL from '@mapbox/react-native-mapbox-gl';
 
+import Map from './Map'
+
 const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',

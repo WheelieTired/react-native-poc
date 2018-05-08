@@ -6,8 +6,11 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import AddPoint from './app/components/AddPoint';
 import Login from './app/components/login';
 import Registration from './app/components/registration';
-import Map from './app/components/map';
-import ChangePassword from './app/components/changePassword'
+import ChangePassword from './app/components/changePassword';
+import AddAlert from './app/components/AddAlert';
+import AddPointContainer from './app/components/AddPointContainer';
+import Map from './app/components/Map';
+
 
 
 //Menu Icon
@@ -18,10 +21,13 @@ import MenuIcon from './app/components/MenuIcon';
 **/
 const DrawerStack = DrawerNavigator({
     Map: { screen: Map },
-    AddPoint: {screen: AddPoint},
+    Add: {screen: AddPointContainer },
     Register: { screen: Registration },
     Login: { screen: Login },
-    ChangePassword: { screen: ChangePassword }
+    ChangePassword: { screen: ChangePassword },
+    AddPointForm: {screen: AddPoint},
+    AddAlertForm: {screen: AddAlert}
+
 })
 
 /**
