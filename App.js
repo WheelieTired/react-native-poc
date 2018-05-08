@@ -9,7 +9,7 @@ import Registration from './app/components/registration';
 import ChangePassword from './app/components/changePassword';
 import AddAlert from './app/components/AddAlert';
 import AddPointContainer from './app/components/AddPointContainer';
-import MapContainer from './app/components/MapContainer';
+import Map from './app/components/Map';
 
 
 //Menu Icon
@@ -19,7 +19,7 @@ import MenuIcon from './app/components/MenuIcon';
     For now only screen are defined here with no other styling
 **/
 const DrawerStack = DrawerNavigator({
-    Map: { screen: MapContainer },
+    Map: { screen: Map },
     Add: {screen: AddPointContainer },
     Register: { screen: Registration },
     Login: { screen: Login },
