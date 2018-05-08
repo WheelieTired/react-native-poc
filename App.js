@@ -8,6 +8,7 @@ import Login from './app/components/login';
 import Registration from './app/components/registration';
 import Map from './app/components/map';
 import ChangePassword from './app/components/changePassword'
+import ForgotPassword from './app/components/forgotPassword'
 
 
 //Menu Icon
@@ -21,7 +22,8 @@ const DrawerStack = DrawerNavigator({
     AddPoint: {screen: AddPoint},
     Register: { screen: Registration },
     Login: { screen: Login },
-    ChangePassword: { screen: ChangePassword }
+    ChangePassword: { screen: ChangePassword },
+    ForgotPassword: {screen: ForgotPassword }
 })
 
 /**
@@ -56,6 +58,3 @@ export default class App extends Component{
     return <Router />;
   }
 }
-
-
-
