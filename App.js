@@ -19,11 +19,12 @@ import MenuIcon from './app/components/MenuIcon';
 **/
 const DrawerStack = DrawerNavigator({
     Map: { screen: Map },
-    AddPoint: {screen: AddPoint},
-    AddAlert: {screen: AddAlert},
+    Add: {screen: AddPointContainer },
     Register: { screen: Registration },
     Login: { screen: Login },
-    ChangePassword: { screen: ChangePassword }
+    ChangePassword: { screen: ChangePassword },
+    AddPointForm: {screen: }
+
 })
 
 /**

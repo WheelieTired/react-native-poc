@@ -80,22 +80,16 @@ export default class Map extends Component<{}> {
     this.state = {
       pointsLoaded: false,
       center: [-77.6109, 43.1610],
+      centerPoint: null,
       points: null,
       addPoint: false
     };
 
     this.createPointCollection = this.createPointCollection.bind(this);
-    this.onRegionDidChange = this.onRegionDidChange.bind(this);
     this.setPointLocation = this.setPointLocation.bind(this);
     //this._onPressButton = this._onPressButton.bind(this);
   }
 
-
-
-  async onRegionDidChange() {
-    const center = await this._map.getCenter();
-    this.setState({center});
-  }
   async setPointLocation(){
     const center = await this._map.getCenter();
     this.setState({center});
@@ -160,7 +154,7 @@ export default class Map extends Component<{}> {
     //console.log('state', this.state);
     var that = this;
     return (
-      <View style={styles.container}>
+            <View style={styles.container}>
         <Mapbox.MapView
           styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
           zoomLevel={1}
@@ -171,7 +165,7 @@ export default class Map extends Component<{}> {
           <Mapbox.ShapeSource
             id="points"
             cluster
-            clusterRadius={50}
+            clusterRadius={35}
             clusterMaxZoom={14}
             shape={this.state.points}
           >
@@ -192,9 +186,13 @@ export default class Map extends Component<{}> {
           />
           </Mapbox.ShapeSource>
 
-        </Mapbox.MapView>
+          <Mapbox.ShapeSource
+            id='centerPoint'
+            shape={that.state.centerPoint}
+          />
 
-      </View>
+        </Mapbox.MapView>
+            </View>
     );
     }
     else{
