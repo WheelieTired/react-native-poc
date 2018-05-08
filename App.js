@@ -12,6 +12,7 @@ import AddPointContainer from './app/components/AddPointContainer';
 import Map from './app/components/Map';
 
 
+
 //Menu Icon
 import MenuIcon from './app/components/MenuIcon';
 
@@ -24,7 +25,8 @@ const DrawerStack = DrawerNavigator({
     Register: { screen: Registration },
     Login: { screen: Login },
     ChangePassword: { screen: ChangePassword },
-    AddPointForm: {screen: AddPoint}
+    AddPointForm: {screen: AddPoint},
+    AddAlertForm: {screen: AddAlert}
 
 })
 

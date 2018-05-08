@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttons:{
-    flex:.2,
+    flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap',
+
   }
 });
 
@@ -156,7 +156,7 @@ export default class Map extends Component<{}> {
     console.log('state', this.state);
     var that = this;
     return (
-            <View style={styles.container}>
+      <View style={styles.container}>
         <Mapbox.MapView
           styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
           zoomLevel={1}
@@ -195,12 +195,33 @@ export default class Map extends Component<{}> {
             coordinate={that.state.center}
           />
         </Mapbox.MapView>
-        <Button title='Add Point' onPress={() => {
-          this.setState({showAddPoint: false})
-          console.log(this.state.center)
-          this.props.nav.navigate('AddPointForm', {point: this.state.center})
-        }}/>
+        <View style={styles.buttons}>
+          <Button
+            title='Cancel Add'
+            onPress={() => {
+              this.setState({showAddPoint: false})
+              this.props.nav.navigate('Map')
+            }}
+          />
+
+          <Button
+            title='Add Alert'
+            onPress={() => {
+              this.setState({showAddPoint: false})
+              console.log(this.state.center)
+              this.props.nav.navigate('AddAlertForm', {point: this.state.center})
+            }}
+          />
+
+          <Button title='Add Point' onPress={() => {
+            this.setState({showAddPoint: false})
+            console.log(this.state.center)
+            this.props.nav.navigate('AddPointForm', {point: this.state.center})
+          }}/>
+
+
         </View>
+      </View>
     );
     }
     else if(this.state.pointsLoaded){
