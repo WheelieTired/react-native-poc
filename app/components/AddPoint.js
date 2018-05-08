@@ -97,19 +97,18 @@ const options = {
 export default class AddPoint extends Component<{}> {
 
     constructor(props) {
-      		super(props);
-
-      		this.initialState = {
-      			isLoading: false,
-      			error: null,
-      			name: '',
-      			description: '',
-      			address: '',
-      			website: '',
-      			ammenity: [],
-      			point: [-77.6109, 43.1610]
-      		};
-      		this.state = this.initialState;
+      super(props);
+      	this.initialState = {
+      	  isLoading: false,
+          error: null,
+          name: '',
+      	  description: '',
+      	  address: '',
+      	  website: '',
+      	  ammenity: [],
+      	  point: [-77.6109, 43.1610]
+      	};
+      	this.state = this.initialState;
     }
 
     handleSubmit = () => {
@@ -132,7 +131,7 @@ export default class AddPoint extends Component<{}> {
                 seasonal: false,
                 created_at: new Date().toLocaleString(),
                 updated_at: new Date().toLocaleString(),
-                location: [43.1610, -77.6109],
+                location: point,
                 name: name,
                 type: ammenity[0],
                 description: description

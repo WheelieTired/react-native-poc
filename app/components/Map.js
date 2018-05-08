@@ -72,6 +72,8 @@ const layerStyles = Mapbox.StyleSheet.create({
   },
 });
 
+
+
 export default class Map extends Component<{}> {
 
   constructor(props){
@@ -82,7 +84,7 @@ export default class Map extends Component<{}> {
       center: [-77.6109, 43.1610],
       centerPoint: null,
       points: null,
-      addPoint: false
+      addPoint: true
     };
 
     this.createPointCollection = this.createPointCollection.bind(this);
@@ -190,9 +192,12 @@ export default class Map extends Component<{}> {
             id='centerPoint'
             shape={that.state.centerPoint}
           />
-
         </Mapbox.MapView>
-            </View>
+        {this.state.addPoint && <Button title='Add Point' onPress={() => {
+          this.setState({AddPoint: true})
+          this.props.navigation.navigate('AddPointForm')
+        }}/>}
+        </View>
     );
     }
     else{

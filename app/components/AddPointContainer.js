@@ -15,8 +15,7 @@ export default class MapContainer extends Component<{}> {
   render(){
   return(
     <View style={styles.container}>
-        <Map/>
-        <Button title='growup' onPress={() => { this.props.navigation.navigate('AddPointForm') }}/>
+        <Map addPoint={false}/>
     </View>
   )}
 }

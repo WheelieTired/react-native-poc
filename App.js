@@ -6,9 +6,10 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import AddPoint from './app/components/AddPoint';
 import Login from './app/components/login';
 import Registration from './app/components/registration';
-import Map from './app/components/map';
 import ChangePassword from './app/components/changePassword';
 import AddAlert from './app/components/AddAlert';
+import AddPointContainer from './app/components/AddPointContainer';
+import MapContainer from './app/components/MapContainer';
 
 
 //Menu Icon
@@ -18,12 +19,12 @@ import MenuIcon from './app/components/MenuIcon';
     For now only screen are defined here with no other styling
 **/
 const DrawerStack = DrawerNavigator({
-    Map: { screen: Map },
+    Map: { screen: MapContainer },
     Add: {screen: AddPointContainer },
     Register: { screen: Registration },
     Login: { screen: Login },
     ChangePassword: { screen: ChangePassword },
-    AddPointForm: {screen: }
+    AddPointForm: {screen: AddPoint}
 
 })
 
