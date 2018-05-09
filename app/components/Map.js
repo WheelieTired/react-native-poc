@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Button, Alert } from 'react-native';
+import { StyleSheet, View, Button, Alert, Image } from 'react-native';
 import Mapbox from '@mapbox/react-native-mapbox-gl';
 import { GetPoints, ReplicateFromDB } from '../data/point/point';
 import PointModal from './PointModal';
@@ -26,19 +26,17 @@ const styles = StyleSheet.create({
   buttons: {
     flex: .2,
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    justifyContent: 'center',
+
   }
 });
 
 
 const layerStyles = Mapbox.StyleSheet.create({
   singlePoint: {
-    circleColor: 'green',
-    circleOpacity: 0.84,
-    circleStrokeWidth: 2,
-    circleStrokeColor: 'white',
-    circleRadius: 5,
-    circlePitchAlignment: 'map',
+    iconImage: markerIcon,
+    iconSize: 1,
+    iconAllowOverlap: true
   },
 
   clusteredPoints: {
@@ -74,6 +72,8 @@ const layerStyles = Mapbox.StyleSheet.create({
   },
 });
 
+
+
 export default class Map extends Component<{}> {
 
   constructor(props) {
@@ -81,14 +81,13 @@ export default class Map extends Component<{}> {
 
     this.state = {
       pointsLoaded: false,
-      center: [-77.6109, 43.1610], //backup coordiantes in case user location does not pass through
+      center: [-77.6109, 43.1610],
+      centerPoint: null,
       points: null,
-      addPoint: false
     };
 
     this.createPointCollection = this.createPointCollection.bind(this);
     this.onRegionDidChange = this.onRegionDidChange.bind(this);
-    this.setPointLocation = this.setPointLocation.bind(this);
     //this._onPressButton = this._onPressButton.bind(this);
   }
 
@@ -173,17 +172,24 @@ export default class Map extends Component<{}> {
 
   render() {
     this.findMyLocation(); //Grab users current location and use that to center the map if available
-    if (this.state.pointsLoaded) {
-      //console.log('state', this.state);
-      var that = this;
-      return (
-        <View style={styles.container}>
-          <Mapbox.MapView
-            styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
-            zoomLevel={1}
-            centerCoordinate={this.state.center}
-            ref={(c) => (this._map = c)}
-            style={styles.container}
+    if(this.state.pointsLoaded && this.props.showAddPoint){
+    console.log('state', this.state);
+    var that = this;
+    return (
+      <View style={styles.container}>
+        <Mapbox.MapView
+          styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
+          zoomLevel={1}
+          centerCoordinate={this.state.center}
+          onRegionDidChange={this.onRegionDidChange}
+          ref={(c) => (this._map = c)}
+          style={styles.container}>
+          <Mapbox.ShapeSource
+            id="points"
+            cluster
+            clusterRadius={35}
+            clusterMaxZoom={14}
+            shape={this.state.points}
           >
             <Mapbox.ShapeSource
               id="points"
@@ -222,12 +228,94 @@ export default class Map extends Component<{}> {
             onPress={() => {
             }}
           />
+          <Mapbox.SymbolLayer
+            id="singlePoint"
+             filter={['!has', 'point_count']}
+             style={layerStyles.singlePoint}
+          />
+
+          </Mapbox.ShapeSource>
+
+
+          <Mapbox.PointAnnotation
+            id="AddPoint"
+            coordinate={that.state.center}
+          />
+        </Mapbox.MapView>
+        <View style={styles.buttons}>
+          <Button
+            title='Cancel'
+            style={{width: '33%'}}
+            onPress={() => {
+              this.setState({showAddPoint: false})
+              this.props.nav.navigate('Map')
+            }}
+          />
+
+          <Button
+            title='Add Alert'
+            style={{width: '33%'}}
+            onPress={() => {
+              this.setState({showAddPoint: false})
+              console.log(this.state.center)
+              this.props.nav.navigate('AddAlertForm', {point: this.state.center})
+            }}
+          />
+
+          <Button
+            title='Add Point'
+            style={{width: '33%'}}
+            onPress={() => {
+              this.setState({showAddPoint: false})
+              console.log(this.state.center)
+              this.props.nav.navigate('AddPointForm', {point: this.state.center})
+          }}/>
+
+
         </View>
-      );
+      </View>
+    );
     }
-    else {
-      console.log('no points', this.state);
-      return null;
+    else if(this.state.pointsLoaded){
+        return (
+        <View style={styles.container}>
+            <Mapbox.MapView
+            styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
+            zoomLevel={1}
+            centerCoordinate={[-77.6109, 43.1610]}
+            ref={(c) => (this._map = c)}
+            style={styles.container}>
+            <Mapbox.ShapeSource
+                id="points"
+                cluster
+                clusterRadius={35}
+                clusterMaxZoom={14}
+                shape={this.state.points}
+            >
+            <Mapbox.SymbolLayer
+                id="pointCount"
+                style={layerStyles.clusterCount}
+            />
+            <Mapbox.CircleLayer
+                id="clusteredPoints"
+                belowLayerID="pointCount"
+                filter={['has', 'point_count']}
+                style={layerStyles.clusteredPoints}
+            />
+            <Mapbox.SymbolLayer
+                id="singlePoint"
+                filter={['!has', 'point_count']}
+                style={layerStyles.singlePoint}
+            />
+
+            </Mapbox.ShapeSource>
+            </Mapbox.MapView>
+        </View>
+        );
+    }
+    else{
+        console.log('no points', this.state);
+        return null;
     }
   }
 }
