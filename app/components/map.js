@@ -213,14 +213,13 @@ export default class Map extends Component<{}> {
             name={'my-location'}
             style={{ position: 'absolute', zIndex: 50, bottom: 5, right: 5 }}
             onPress={() => {
-              
+              this._map.flyTo(this.state.center)
             }}
           />
           <MapButton
             name={'filter-list'}
             style={{ position: 'absolute', zIndex: 50, bottom: 65, right: 5 }}
             onPress={() => {
-              this._map.flyTo(this.state.center)
             }}
           />
         </View>
