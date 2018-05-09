@@ -1,21 +1,20 @@
-/* Temporary file to from tutorial to test out environment */
-
 import React, { Component } from 'react';
 import { StyleSheet, View, Button, Alert, Image } from 'react-native';
 import Mapbox from '@mapbox/react-native-mapbox-gl';
-import {GetPoints, ReplicateFromDB} from '../data/point/point';
+import { GetPoints, ReplicateFromDB } from '../data/point/point';
 import PointModal from './PointModal';
-
-import markerIcon from '../images/marker-icon.png';
+import MapButton from './MapButtons';
+import { TouchableOpacity } from 'react-native';
+//import markerIcon from '../images/marker-icon.png';
 import PouchDB from 'pouchdb-react-native';
 
 const db = new PouchDB('points');
 const remotedb = new PouchDB('http://52.91.46.42:5984/points', {
-    auth: {
+  auth: {
     username: 'btc-admin',
     password: 'damsel-custard-tramway-ethanol'
-    }
-  });
+  }
+});
 
 Mapbox.setAccessToken('pk.eyJ1IjoiYWNhLW1hcGJveCIsImEiOiJjajhkbmNjN2YwcXg0MnhzZnU2dG93NmdqIn0.jEUoPlUBoAsHAZw5GKpgiQ');
 
@@ -24,8 +23,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  buttons:{
-    flex: .05,
+  buttons: {
+    flex: .2,
     flexDirection: 'row',
     justifyContent: 'center',
 
@@ -77,7 +76,7 @@ const layerStyles = Mapbox.StyleSheet.create({
 
 export default class Map extends Component<{}> {
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -92,66 +91,87 @@ export default class Map extends Component<{}> {
     //this._onPressButton = this._onPressButton.bind(this);
   }
 
-  async onRegionDidChange(){
+
+  findMyLocation() {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        this.state.center = [longitude, latitude]; // eslint-disable-line no-unused-vars
+        console.log(this.state.center);
+      },
+      (err) => {
+        console.error(err);
+      },
+      {
+        timeout: 5000
+      }
+    );
+  }
+  async onRegionDidChange() {
     const center = await this._map.getCenter();
-    this.setState({center});
+    this.setState({ center });
+  }
+  async setPointLocation() {
+    const center = await this._map.getCenter();
+    this.setState({ center });
   }
 
-  createPointCollection(that){ }
+  createPointCollection(that) { }
 
-  componentDidMount(){
+  componentDidMount() {
     var that = this;
-      PouchDB.replicate(remotedb, db).on('change', function (info) {
+    PouchDB.replicate(remotedb, db).on('change', function (info) {
       // handle change
-      }).on('paused', function (err) {
+    }).on('paused', function (err) {
       // replication paused (e.g. replication up to date, user went offline)
-      }).on('active', function () {
+    }).on('active', function () {
       // replicate resumed (e.g. new changes replicating, user went back online)
-      }).on('denied', function (err) {
+    }).on('denied', function (err) {
       // a document failed to replicate (e.g. due to permissions)
-      }).on('complete', function (info) {
-        console.log("points copied from db");
-        console.log("grabbing points from local db");
-          db.allDocs({ startkey: "point", endkey: "point\ufff0" }).then(function (result) {
-            var docs = result.rows.map(function (row) {
-              return row.doc.location;
-            });
-            console.log(docs);
-            const PointCollection = {
-              type: 'FeatureCollection',
-              features: []
-            };
+    }).on('complete', function (info) {
+      console.log("points copied from db");
+      console.log("grabbing points from local db");
+      db.allDocs({ startkey: "point", endkey: "point\ufff0" }).then(function (result) {
+        var docs = result.rows.map(function (row) {
+          return row.doc.location;
+        });
+        console.log(docs);
+        const PointCollection = {
+          type: 'FeatureCollection',
+          features: []
+        };
 
-            for(var i=0; i<docs.length; i++){
-              if(docs[i]){
-                PointCollection.features.push({
-                  type: 'Feature',
-                  id: 'TestPoint',
-                  properties: {
-                    icon: 'circle-15',
-                  },
-                  geometry: {
-                     type: 'Point',
-                     coordinates: [docs[i][1], docs[i][0]]
-                  }
-                });
-                }
+        for (var i = 0; i < docs.length; i++) {
+          if (docs[i]) {
+            PointCollection.features.push({
+              type: 'Feature',
+              id: 'TestPoint',
+              properties: {
+                icon: 'circle-15',
+              },
+              geometry: {
+                type: 'Point',
+                coordinates: [docs[i][1], docs[i][0]]
               }
+            });
+          }
+        }
 
-              that.setState({
-                pointsLoaded: true,
-                points: PointCollection
-              });
+        that.setState({
+          pointsLoaded: true,
+          points: PointCollection
+        });
 
-          }).catch(function (err) {
-            console.log(err);
-          });
-      }).on('error', function (err) {
-         console.log(err.message);
+      }).catch(function (err) {
+        console.log(err);
       });
-    }
+    }).on('error', function (err) {
+      console.log(err.message);
+    });
+  }
 
   render() {
+    this.findMyLocation(); //Grab users current location and use that to center the map if available
     if(this.state.pointsLoaded && this.props.showAddPoint){
     console.log('state', this.state);
     var that = this;
@@ -160,7 +180,7 @@ export default class Map extends Component<{}> {
         <Mapbox.MapView
           styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
           zoomLevel={1}
-          centerCoordinate={[-77.6109, 43.1610]}
+          centerCoordinate={this.state.center}
           onRegionDidChange={this.onRegionDidChange}
           ref={(c) => (this._map = c)}
           style={styles.container}>
@@ -171,15 +191,42 @@ export default class Map extends Component<{}> {
             clusterMaxZoom={14}
             shape={this.state.points}
           >
-          <Mapbox.SymbolLayer
-            id="pointCount"
-            style={layerStyles.clusterCount}
+            <Mapbox.ShapeSource
+              id="points"
+              cluster
+              clusterRadius={50}
+              clusterMaxZoom={14}
+              shape={this.state.points}
+            >
+              <Mapbox.SymbolLayer
+                id="pointCount"
+                style={layerStyles.clusterCount}
+              />
+              <Mapbox.CircleLayer
+                id="clusteredPoints"
+                belowLayerID="pointCount"
+                filter={['has', 'point_count']}
+                style={layerStyles.clusteredPoints}
+              />
+              <Mapbox.CircleLayer
+                id="singlePoint"
+                filter={['!has', 'point_count']}
+                style={layerStyles.singlePoint}
+              />
+            </Mapbox.ShapeSource>
+          </Mapbox.MapView>
+          <MapButton
+            name={'my-location'}
+            style={{ position: 'absolute', zIndex: 50, bottom: 5, right: 5 }}
+            onPress={() => {
+              this._map.flyTo(this.state.center)
+            }}
           />
-          <Mapbox.CircleLayer
-            id="clusteredPoints"
-            belowLayerID="pointCount"
-            filter={['has', 'point_count']}
-            style={layerStyles.clusteredPoints}
+          <MapButton
+            name={'filter-list'}
+            style={{ position: 'absolute', zIndex: 50, bottom: 65, right: 5 }}
+            onPress={() => {
+            }}
           />
           <Mapbox.SymbolLayer
             id="singlePoint"
