@@ -134,7 +134,7 @@ export default class AddPoint extends Component<{}> {
 
             const { name, description, phone, address, website, ammenity } = this.state;
 
-            var hash = ngeohash.encode(point[0],point[1]);
+            var hash = ngeohash.encode(this.props.navigation.state.params.point[0],this.props.navigation.state.params.point[1]);
             var data = {
                 _id: 'point/service/' + String(name).trim() + '/' + hash,
                 comments: [],

@@ -24,7 +24,7 @@ const DrawerStack = DrawerNavigator({
     Register: { screen: Registration },
     Login: { screen: Login },
     ChangePassword: { screen: ChangePassword },
-    ForgotPassword: {screen: ForgotPassword }
+    ForgotPassword: {screen: ForgotPassword },
     AddPointForm: {screen: AddPoint},
     AddAlertForm: {screen: AddAlert}
 })

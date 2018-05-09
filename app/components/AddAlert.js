@@ -92,14 +92,14 @@ export default class AddPoint extends Component<{}> {
         if(this.state != null){
 
             const { name, description, alerttype, point } = this.state;
-            var hash = ngeohash.encode(point[0],point[1]);
+            var hash = ngeohash.encode(this.props.navigation.state.params.point[0],this.props.navigation.state.params.point[1]);
             var data = {
                 _id: 'point/alert/' + String(name).trim() + '/' + hash,
                 comments: [],
                 type: alerttype,
                 created_at: new Date().toLocaleString(),
                 updated_at: new Date().toLocaleString(),
-                location: [43.1610, -77.6109],
+                location: [this.props.navigation.state.params.point[1], this.props.navigation.state.params.point[0]],
                 name: name,
                 type: alert[0],
                 description: description
