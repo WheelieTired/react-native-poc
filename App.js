@@ -6,12 +6,11 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import AddPoint from './app/components/AddPoint';
 import Login from './app/components/login';
 import Registration from './app/components/registration';
+import ForgotPassword from './app/components/forgotPassword';
 import ChangePassword from './app/components/changePassword';
 import AddAlert from './app/components/AddAlert';
 import AddPointContainer from './app/components/AddPointContainer';
 import Map from './app/components/Map';
-
-
 
 //Menu Icon
 import MenuIcon from './app/components/MenuIcon';
@@ -25,9 +24,9 @@ const DrawerStack = DrawerNavigator({
     Register: { screen: Registration },
     Login: { screen: Login },
     ChangePassword: { screen: ChangePassword },
+    ForgotPassword: {screen: ForgotPassword }
     AddPointForm: {screen: AddPoint},
     AddAlertForm: {screen: AddAlert}
-
 })
 
 /**
@@ -62,6 +61,3 @@ export default class App extends Component{
     return <Router />;
   }
 }
-
-
-
