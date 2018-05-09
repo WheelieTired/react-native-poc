@@ -178,13 +178,6 @@ export default class Map extends Component<{}> {
       var that = this;
       return (
         <View style={styles.container}>
-        <MapButton
-                name={'my-location'}
-                color={'blue'}
-                onPress={() => {
-                  this._map.flyTo(this.state.center)
-                }}
-              />
           <Mapbox.MapView
             styleURL={"mapbox://styles/aca-mapbox/cj8w8rbjnfwit2rpqudlc4msn"}
             zoomLevel={1}
@@ -216,7 +209,20 @@ export default class Map extends Component<{}> {
               />
             </Mapbox.ShapeSource>
           </Mapbox.MapView>
-          
+          <MapButton
+            name={'my-location'}
+            style={{ position: 'absolute', zIndex: 50, bottom: 5, right: 5 }}
+            onPress={() => {
+              
+            }}
+          />
+          <MapButton
+            name={'filter-list'}
+            style={{ position: 'absolute', zIndex: 50, bottom: 65, right: 5 }}
+            onPress={() => {
+              this._map.flyTo(this.state.center)
+            }}
+          />
         </View>
       );
     }

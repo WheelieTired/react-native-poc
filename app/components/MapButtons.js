@@ -4,17 +4,18 @@ import { Icon } from 'react-native-elements'
 
 const MapButton = (props) => {
 
-  const { onPress, color, name, icon } = props
+  const { onPress, name, style, icon } = props
 
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={onPress}
+      style={style}
       >
       <Icon
         name={name}
         size={40}
-        color={color}
+        color={'#3AB5CE'}
         raised
         containerStyle={{width: 50, height: 50, borderRadius: 31}}
         />
